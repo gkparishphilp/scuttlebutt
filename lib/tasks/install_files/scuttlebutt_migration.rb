@@ -2,14 +2,14 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 
 	def change
 		create_table :scuttlebutt_messages do |t|
-			t.references	:user
+			t.references	:recipient. # nil for system
 			t.references	:sender
 			t.string		:title
 			t.text			:content
 			t.integer		:status,		default: 1 # unread, read, archived, trash
 			t.timestamps
 		end
-		add_index :scuttlebutt_messages, [ :user_id, :status ]
+		add_index :scuttlebutt_messages, [ :recipient_id, :status ]
 
 		create_table :scuttlebutt_notifications do |t|
 			t.references	:user 
