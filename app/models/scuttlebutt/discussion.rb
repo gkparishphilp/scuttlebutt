@@ -1,4 +1,4 @@
-module SwellSocial
+module Scuttlebutt
 	class Discussion < Pulitzer::Media
 
 		def all_posts

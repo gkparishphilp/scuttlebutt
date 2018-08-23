@@ -1,7 +1,7 @@
 # desc "Explaining what the task does"
 namespace :scuttlebutt do
 	task :install do
-		puts "Installing SCuttlebutt. What's Up?"
+		puts "Installing Scuttlebutt. What's Up?"
 
 		files = {
 					

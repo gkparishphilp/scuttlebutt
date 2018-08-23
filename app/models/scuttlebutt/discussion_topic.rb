@@ -1,5 +1,5 @@
 module Scuttlebutt
-	class DiscussionTopic < UserPost
+	class DiscussionTopic < Post
 
 		def discussion
 			Discussion.find_by( id: self.parent_obj_id )

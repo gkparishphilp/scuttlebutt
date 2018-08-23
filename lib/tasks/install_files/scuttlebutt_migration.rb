@@ -2,7 +2,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 
 	def change
 		create_table :scuttlebutt_messages do |t|
-			t.references	:recipient. # nil for system
+			t.references	:recipient # nil for system
 			t.references	:sender
 			t.string		:title
 			t.text			:content
@@ -14,8 +14,8 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 		create_table :scuttlebutt_notifications do |t|
 			t.references	:user 
 			t.references	:actor
-			t.references 	:parent_obj, polymorphic: true  # to help de-dup
-			t.references 	:activity_obj, polymorphic: true
+			t.references 	:parent_obj, polymorphic: true, index: { name: 'idx_notifications_on_par_obj' } # to help de-dup
+			t.references 	:activity_obj, polymorphic: true, index: { name: 'idx_notifications_on_act_obj' }
 			t.string		:title
 			t.text			:content
 			t.integer		:status,		default: 1 # hidden, unread, read, archived, trash,
@@ -28,7 +28,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 			t.datetime		:publish_at
 			t.timestamps
 		end
-		add_index :scuttlebutt_notifications, [ :user_id, :created_at, :status ]
+		add_index :scuttlebutt_notifications, [ :user_id, :created_at, :status ], name: 'idx_notifications_on_user'
 		add_index :scuttlebutt_notifications, [ :user_id, :parent_obj_id, :parent_obj_type ], name: 'idx_notifications_on_parent'
 		add_index :scuttlebutt_notifications, [:action, :children_count, :status, :created_at], name: 'idx_notifications_action_count_status'
 		add_index :scuttlebutt_notifications, [:user_id, :action, :children_count, :status, :created_at], name: 'idx_notifications_user_action_count_status'
@@ -39,7 +39,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 
 		create_table :scuttlebutt_subscriptions do |t|
 			t.references		:user
-			t.references		:parent_obj, 			polymorphic: true
+			t.references		:parent_obj, 			polymorphic: true, index: { name: 'idx_subs_on_par_obj' }
 			t.references		:category
 			t.string			:format,				default: 'site' 	# email
 			t.text 				:notification_contexts, array: true, default: []
@@ -54,7 +54,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 		# base for comments
 		create_table :scuttlebutt_posts do |t|
 			t.references		:user
-			t.references		:parent_obj,			polymorphic: true
+			t.references		:parent_obj,			polymorphic: true, index: { name: 'idx_posts_on_par_obj' }
 			t.references		:reply_to 				# for nested_set
 			t.integer			:lft
 			t.integer			:rgt
@@ -95,7 +95,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 
 
 		create_table :scuttlebutt_votes do |t|
-			t.references 		:parent_obj, polymorphic: true
+			t.references 		:parent_obj, polymorphic: true, index: { name: 'idx_votes_on_par_obj' }
 			t.references 		:user
 			t.references 		:site
 			t.integer 			:val, 			default: 0  # enum -1 down, 1 up
@@ -106,8 +106,8 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 			t.timestamps
 		end
 		add_index :scuttlebutt_votes, [  :user_id, :parent_obj_id, :parent_obj_type ], name: 'idx_votes_on_parent'
-		add_index :scuttlebutt_votes, [ :parent_obj_id, :parent_obj_type, :context ]
-		add_index :scuttlebutt_votes, [ :user_id, :context ]
+		add_index :scuttlebutt_votes, [ :parent_obj_id, :parent_obj_type, :context ], name: 'idx_votes_on_parent_context'
+		add_index :scuttlebutt_votes, [ :user_id, :context ], name: 'idx_votes_on_user_context'
 	end
 
 end
