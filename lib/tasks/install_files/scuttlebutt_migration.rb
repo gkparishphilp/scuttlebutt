@@ -12,7 +12,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 		add_index :scuttlebutt_messages, [ :user_id, :status ]
 
 		create_table :scuttlebutt_notifications do |t|
-			t.references	:user 
+			t.references	:user
 			t.references	:actor
 			t.references 	:parent_obj, polymorphic: true  # to help de-dup
 			t.references 	:activity_obj, polymorphic: true
@@ -49,7 +49,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 			t.timestamps
 		end
 		add_index :scuttlebutt_subscriptions, [ :user_id, :parent_obj_id, :parent_obj_type ], name: 'idx_subs_on_parent'
-		
+
 
 		# base for comments
 		create_table :scuttlebutt_posts do |t|
@@ -60,7 +60,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 			t.integer			:rgt
 			t.string			:type
 			t.string 			:slug
-			
+
 			t.string			:subject
 			t.text				:content
 			t.integer 			:rating # for reviews
@@ -97,7 +97,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 		create_table :scuttlebutt_votes do |t|
 			t.references 		:parent_obj, polymorphic: true
 			t.references 		:user
-			t.references 		:site
+			# t.references 		:site
 			t.integer 			:val, 			default: 0  # enum -1 down, 1 up
 			t.string 			:vote_type
 			t.string 			:context,		default: 'vote'
