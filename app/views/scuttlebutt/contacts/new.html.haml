@@ -1,0 +1,25 @@
+.container
+	.row
+		.col-sm-8
+
+			%h3.headline.first-child
+				%span
+					Contact Us
+			%p
+				We'd love to hear from you!
+
+			= form_for Scuttlebutt::Message.new, url: scuttlebutt.contacts_path do |f|
+				.form-group
+					= f.label :email
+					= f.text_field :email, placeholder: 'Your Email', class: 'form-control'
+				.form-group
+					= f.label :title, 'Subject'
+					= f.text_field :title, placeholder: 'Subject', class: 'form-control'
+				.form-group
+					= f.label :content
+					= f.text_area :content, rows: 3, class: 'form-control'
+
+				= f.submit 'Send', class: 'btn btn-lg btn-red'
+
+
+		.col-sm-4

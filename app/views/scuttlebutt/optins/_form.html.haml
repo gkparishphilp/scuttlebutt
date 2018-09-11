@@ -1,0 +1,8 @@
+= form_for ScuttleButt::Message.new, url: scuttlebutt.optins_path, role: :form, class: 'form-horizontal'  do |f|
+	.col-lg-10
+		.form-group
+			= f.text_field :name, placeholder: 'Your Name', class: 'form-control'
+		.form-group
+			= f.text_field :email, placeholder: 'Your Email', class: 'form-control'
+	.col-lg-2
+		= f.submit 'Join', class: 'btn btn-info pull-right'
