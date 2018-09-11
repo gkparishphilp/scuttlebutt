@@ -6,9 +6,9 @@ module Scuttlebutt
 		end
 
 		def posts
-			DiscussionPost.active.where( parent_obj_id: self.topics.pluck( :id ), parent_obj_type: 'SwellSocial::DiscussionTopic' )
+			DiscussionPost.active.where( parent_obj_id: self.topics.pluck( :id ), parent_obj_type: 'Scuttlebutt::DiscussionTopic' )
 		end
-		
+
 		def last_post
 			self.all_posts.sort{ |p| p.created_at.to_i }.last
 		end

@@ -20,7 +20,7 @@
 
 	- @posts.each do |post|
 		= render 'scuttlebutt/discussion_posts/post', post: post, args: {}
-	
+
 	= raw paginate @posts
 
 

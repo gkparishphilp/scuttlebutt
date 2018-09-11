@@ -2,7 +2,7 @@ module Scuttlebutt
 	class DiscussionsController < ApplicationController
 
 		def index
-			@discussions = Discussion.published	
+			@discussions = Discussion.published
 		end
 
 		def show
@@ -15,7 +15,7 @@ module Scuttlebutt
 			end
 
 			@topics = @discussion.topics.active.order( created_at: :desc ).page( params[:page] )
-			
+
 		end
 
 	end

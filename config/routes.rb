@@ -10,12 +10,13 @@ Scuttlebutt::Engine.routes.draw do
 	end
 
 
-	if SwellSocial::discussion_path
-		resources :discussions, path: SwellSocial.discussion_path do 
-			resources :topics, controller: :discussion_topics
-		end
-		resources :discussion_posts
-	end
+	# if Scuttlebutt.discussion_path
+	# 	resources :discussions, path: Scuttlebutt.discussion_path do
+	# 		resources :topics, controller: :discussion_topics
+	# 	end
+	# 	resources :discussion_posts
+	# end
+
 	resources :discussion_admin
 
 	resources :notifications
