@@ -1,8 +1,8 @@
 module Scuttlebutt
 	class Subscription < ApplicationRecord
 
-		enum status: { 'active' => 1, 'deleted' => 2 }
-		enum availability: { 'just_me' => 1, 'anyone' => 2 }
+		enum status: { 'active' => 1, 'trash' => -50 }
+		enum availability: { 'anyone' => 1, 'just_me' => 3 }
 
 		belongs_to	:user
 		belongs_to	:parent_obj, polymorphic: true

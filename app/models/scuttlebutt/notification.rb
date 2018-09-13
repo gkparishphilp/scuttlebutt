@@ -3,7 +3,7 @@ module Scuttlebutt
 
 		before_save :set_default_publish_at
 
-		enum status: { 'hidden' => 0, 'unnoticed' => 1, 'unread' => 2, 'read' => 3, 'archived' => 4, 'trash' => 5 }
+		enum status: { 'unnoticed' => 1, 'unread' => 10, 'read' => 20, 'archived' => 100, 'trash' => -50 }
 
 		belongs_to		:user
 		belongs_to		:actor, class_name: 'User'

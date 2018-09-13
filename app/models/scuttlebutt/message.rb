@@ -6,7 +6,7 @@ module Scuttlebutt
 
 		attr_accessor :email, :name
 
-		enum status: { 'unnoticed' => 1, 'unread' => 2, 'read' => 3, 'archived' => 4, 'trash' => 5 }
+		enum status: { 'unnoticed' => 1, 'unread' => 10, 'read' => 20, 'archived' => 100, 'trash' => -50 }
 
 		def self.active
 			where( status: [1,2,3] )

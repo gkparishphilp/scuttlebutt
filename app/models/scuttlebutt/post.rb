@@ -3,8 +3,8 @@ module Scuttlebutt
 
 		before_save	:set_cached_counts, :update_content_hash
 
-		enum status: { 'to_moderate' => -1, 'draft' => 0, 'active' => 1, 'removed' => 2, 'trash' => 3 }
-		enum availability: { 'just_me' => 1, 'anyone' => 2 }
+		enum status: { 'trash' => -50, 'removed' => -20, 'to_moderate' => -10, 'draft' => 0, 'active' => 1 }
+		enum availability: { 'anyone' => 1, 'just_me' => 3 }
 
 		validate 				:check_duplicates
 		validates_presence_of 	:content, if: :validate_presence_of_content?
