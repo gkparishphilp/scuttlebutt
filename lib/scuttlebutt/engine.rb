@@ -1,9 +1,11 @@
 module Scuttlebutt
 
 	class << self
-		#mattr_accessor :app_description
+		mattr_accessor :discussion_path
+		self.discussion_path = 'forums'
 
-		#self.app_description = 'A Very Swell App indeed'
+		mattr_accessor :discussion_topic_path
+		self.discussion_topic_path = 'topics'
 
 	end
 

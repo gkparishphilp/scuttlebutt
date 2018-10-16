@@ -1,6 +1,6 @@
 module Scuttlebutt
 	class DiscussionPost < Post
-		
+
 		def discussion
 			self.topic.discussion
 		end
@@ -10,16 +10,14 @@ module Scuttlebutt
 			page = ( priors / per_page ) + 1
 		end
 
-		def path( args={} )
-			path = "/discussions/#{self.discussion.slug}/topics/#{self.topic.slug}?page=#{self.paginated_page}"
-
-			if args.present? && args.delete_if{ |k, v| k.blank? || v.blank? }
-				path += '&' unless args.empty?
-				path += args.map{ |k,v| "#{k}=#{URI.encode(v)}"}.join( '&' )
-			end
-
-			return "#{path}#swell_social_discussion_post_#{self.id}"
-		end
+		# def path( args={} )
+		# 	path = "/discussions/#{self.discussion.slug}/topics/#{self.topic.slug}?page=#{self.paginated_page}"
+		# 	if args.present? && args.delete_if{ |k, v| k.blank? || v.blank? }
+		# 		path += '&' unless args.empty?
+		# 		path += args.map{ |k,v| "#{k}=#{URI.encode(v)}"}.join( '&' )
+		# 	end
+		# 	return "#{path}#swell_social_discussion_post_#{self.id}"
+		# end
 
 		def preview
 			self.content
@@ -29,14 +27,16 @@ module Scuttlebutt
 			DiscussionTopic.find_by( id: self.parent_obj_id )
 		end
 
+		# def url( args={} )
+		# 	domain = ( args.present? && args.delete( :domain ) ) || ENV['APP_DOMAIN'] || 'localhost:3000'
+		# 	protocol = ( args.present? && args.delete( :protocol ) ) || 'http'
+		# 	path = self.path( args )
+		# 	url = "#{protocol}://#{domain}#{self.path( args )}"
+		# 	return url
+		# end
+
 		def url( args={} )
-			domain = ( args.present? && args.delete( :domain ) ) || ENV['APP_DOMAIN'] || 'localhost:3000'
-			protocol = ( args.present? && args.delete( :protocol ) ) || 'http'
-			path = self.path( args )
-			url = "#{protocol}://#{domain}#{self.path( args )}"
-
-			return url
-
+			self.topic.url( post_id: self.id )
 		end
 
 	end

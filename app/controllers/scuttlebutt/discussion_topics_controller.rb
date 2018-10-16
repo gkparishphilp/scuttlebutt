@@ -23,7 +23,8 @@ module Scuttlebutt
 		end
 
 		def show
-			@discussion = Discussion.published.friendly.find( params[:discussion_id] )
+			@topic = DiscussionTopic.friendly.find( params[:id] )
+			@discussion = @topic.discussion
 
 			if current_user.read_attribute_before_type_cast( :role ).to_i < @discussion.read_attribute_before_type_cast( :availability ).to_i
 				puts "You don't have permission ot access this discussion"
@@ -31,7 +32,6 @@ module Scuttlebutt
 				return false
 			end
 
-			@topic = @discussion.topics.friendly.find( params[:id] )
 			@posts = @topic.posts.active.order( created_at: :desc ).page( params[:page] )
 		end
 

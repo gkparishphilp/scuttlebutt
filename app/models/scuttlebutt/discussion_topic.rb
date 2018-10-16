@@ -1,6 +1,10 @@
 module Scuttlebutt
 	class DiscussionTopic < Post
 
+		include Pulitzer::Concerns::URLConcern
+
+		mounted_at "/#{Scuttlebutt.discussion_topic_path}"
+
 		def discussion
 			Discussion.find_by( id: self.parent_obj_id )
 		end
@@ -16,17 +20,6 @@ module Scuttlebutt
 			page = ( priors / per_page ) + 1
 		end
 
-		def path( args={} )
-			path = "/discussions/#{self.discussion.slug}/topics/#{self.slug}?page=#{self.paginated_page}"
-
-			if args.present? && args.delete_if{ |k, v| k.blank? || v.blank? }
-				path += '&' unless args.empty?
-				path += args.map{ |k,v| "#{k}=#{URI.encode(v)}"}.join( '&' )
-			end
-
-			return path
-		end
-
 		def posts
 			DiscussionPost.where( parent_obj_id: self.id, parent_obj_type: self.class.name )
 		end
@@ -39,23 +32,5 @@ module Scuttlebutt
 			self.subject
 		end
 
-
-		def url( args={} )
-			domain = ( args.present? && args.delete( :domain ) ) || ENV['APP_DOMAIN'] || 'localhost:3000'
-			protocol = ( args.present? && args.delete( :protocol ) ) || 'http'
-			path = self.path( args )
-			url = "#{protocol}://#{domain}#{self.path( args )}"
-
-			return url
-
-		end
-
-
 	end
 end
-
-
-
-			
-
-

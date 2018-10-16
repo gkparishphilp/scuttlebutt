@@ -1,6 +1,8 @@
 module Scuttlebutt
 	class Discussion < Pulitzer::Media
 
+		mounted_at "/#{Scuttlebutt.discussion_path}"
+
 		def all_posts
 			self.posts + self.topics
 		end

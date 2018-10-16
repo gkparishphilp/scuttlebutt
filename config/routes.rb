@@ -10,12 +10,13 @@ Scuttlebutt::Engine.routes.draw do
 	end
 
 
-	# if Scuttlebutt.discussion_path
-	# 	resources :discussions, path: Scuttlebutt.discussion_path do
-	# 		resources :topics, controller: :discussion_topics
-	# 	end
-	# 	resources :discussion_posts
-	# end
+	if Scuttlebutt.discussion_path
+		resources :discussions, path: Scuttlebutt.discussion_path
+	end
+	if Scuttlebutt.discussion_topic_path
+		resources :discussion_topics, path: Scuttlebutt.discussion_topic_path
+	end
+	resources :discussion_posts
 
 	resources :discussion_admin
 

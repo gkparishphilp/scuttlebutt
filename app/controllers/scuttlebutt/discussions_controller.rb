@@ -2,7 +2,7 @@ module Scuttlebutt
 	class DiscussionsController < ApplicationController
 
 		def index
-			@discussions = Discussion.published
+			@discussions = Discussion.published.order( created_at: :asc )
 		end
 
 		def show
