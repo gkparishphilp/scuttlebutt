@@ -2,7 +2,7 @@ module Scuttlebutt
 	class ContactsController < ApplicationController
 
 		def create
-			@user = User.find_or_create_by_email( params[:message][:email] )
+			@user = User.find_or_create_by( email: params[:message][:email] )
 			@user.full_name = params[:message][:name]
 			if @user.save
 				@message = Message.new( message_params )
