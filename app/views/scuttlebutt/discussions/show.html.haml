@@ -1,47 +1,26 @@
 .container
 	.row
-		.col-xs-10
-			%ol.breadcrumb
-				%li
-					%a{ href: scuttlebutt.discussions_path }
-						Discussions
-				%li
-					= @discussion
-		.col-xs-2
+		.col-10
+			%h2.mb-0=@discussion
+			%nav
+				%ol.breadcrumb
+					%li.breadcrumb-item
+						%a{ href: scuttlebutt.discussions_path }
+							Discussions
+					%li.breadcrumb-item.active
+						= @discussion
+		.col-2
 			%a.btn.btn-success{ href: '#new_topic', data: { toggle: :modal, target: '#new_topic' } }
 				%i.fa.fa-plus
 				Post
 	.row
-		.col-xs-12
-			%table.table
-				%thead
-					%th
-
-				- @topics.each do |topic|
-					%tr
-						%td
-							%a{ href: topic.url }
-								= truncate topic.preview
-							- if topic.user.respond_to? :url
-								= link_to topic.user.username, topic.user.url
-							- else
-								= topic.user.username
-							= topic.created_at.to_s( :long )
-						%td
-							= pluralize topic.posts.count, 'Reply'
-							and
-							= pluralize topic.cached_impression_count, 'View'
-						%td
-							- if topic.last_post.present?
-								Last:
-								= topic.last_post.preview
-								by
-								- if topic.last_post.user.respond_to? :url
-									= link_to topic.last_post.user.username, topic.last_post.user.url
-								- else
-									= topic.last_post.user.username
-							- else
-								No replies yet.
-
+		.col-12
+			- if @topics.present?
+				%ul.list-unstyled
+					- @topics.each do |topic|
+						= render 'scuttlebutt/discussion_topics/topic', topic: topic, args: {}
+			- else
+				%h4
+					Be the first to post in this discussion
 
 = render 'scuttlebutt/discussion_topics/new_modal'

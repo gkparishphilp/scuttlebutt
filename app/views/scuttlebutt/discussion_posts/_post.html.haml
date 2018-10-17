@@ -1,15 +1,15 @@
-.row[post]
-	.col-xs-2
-		= post.user.avatar_tag( class: 'img-responsive' )
-	.col-xs-10
-		%strong
-			= post.user
-		= time_ago_in_words( post.created_at )
-		ago
-		.content{ style: 'padding: 1em;' }
+.media.mb-3[post]
+	%img.mr-3{ src: post.user.avatar, style: 'width: 64px;' }
+	.media-body
+		.media-byline
+			%strong
+				= post.user
+			= time_ago_in_words( post.created_at )
+			ago
+		.media-text
 			- if post.content
-				%blockquote.small.color-white
+				%blockquote.small
 					= raw post.content
 		- unless args[:disable_votes]
-			.actions
+			.media-actions
 				= render 'scuttlebutt/votes/widget', parent_obj: post, args: {}

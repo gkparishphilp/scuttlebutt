@@ -1,15 +1,31 @@
-.row[topic]
-	.col-xs-2
-		= topic.user.avatar_tag( class: 'img-responsive' )
-	.col-xs-10
-		%strong
-			= topic.user
-		= time_ago_in_words( topic.created_at )
-		ago
-		.content{ style: 'padding: 1em;' }
+.media.mb-3[topic]
+	%a{ href: topic.url }
+		%img.mr-3{ src: topic.user.avatar, style: 'width: 64px;' }
+	.media-body
+		%h5.mb-0.pb-0
+			%a{ href: topic.url }=topic.subject
+		.media-byline
+			%strong
+				= topic.user
+			= time_ago_in_words( topic.created_at )
+			ago
+		.media-text
 			- if topic.content
-				%blockquote.small.color-white
-					= raw topic.content
-		- unless args[:disable_votes]
-			.actions
+				%blockquote.small.mb-0
+					= raw topic.preview
+		.media-stats
+			= pluralize topic.posts.count, 'Reply'
+			-# and
+			-# = pluralize topic.cached_impression_count, 'View'
+			|
+			- if topic.last_post.present?
+				Last:
+				= topic.last_post.preview
+				by
+				- if topic.last_post.user.respond_to? :url
+					= link_to topic.last_post.user.username, topic.last_post.user.url
+				- else
+					= topic.last_post.user.username
+		-# unless args[:disable_votes]
+			.media-actions
 				= render 'scuttlebutt/votes/widget', parent_obj: topic, args: {}

@@ -36,7 +36,7 @@ module Scuttlebutt
 		# end
 
 		def url( args={} )
-			self.topic.url( post_id: self.id )
+			self.topic.url( post_id: self.id.to_s )
 		end
 
 	end

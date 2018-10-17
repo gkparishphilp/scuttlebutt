@@ -1,23 +1,27 @@
-%span.badge.badge-info
-	= Scuttlebutt::Vote.where( parent_obj: parent_obj, user: current_user ).sum(:val)
-
-- if current_user.present?
-	- if (vote = Scuttlebutt::Vote.where( parent_obj: parent_obj, user: current_user ).first).present?
-		- if vote.down?
-			%a.btn.btn-default.btn-sm{ href: scuttlebutt.vote_path( vote, val: 1 ), data: { method: :put } }
-				up
+%div.votes_widget{ class: "votes_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}" }
+	%span.badge.badge-info
+		= Scuttlebutt::Vote.where( parent_obj: parent_obj, user: current_user ).sum(:val)
+	%strong score
+	|
+	- if current_user.present?
+		- if (vote = Scuttlebutt::Vote.where( parent_obj: parent_obj, user: current_user ).first).present?
+			- if vote.down?
+				%a.btn.btn-default.btn-sm{ href: scuttlebutt.vote_path( vote, val: 1 ), data: { method: :put } }
+					up vote
+				\/
+			%bold.btn.btn-default.btn-sm.disabled.active
+				= vote.val
+				vote
+			- if vote.up?
+				\/
+				%a.btn.btn-default.btn-sm{ href: scuttlebutt.vote_path( vote, val: -1 ), data: { method: :put } }
+					down vote
+		- else
+			%a.btn.btn-default.btn-sm{ href: scuttlebutt.votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, val: 1 ) }
+				up vote
 			\/
-		%bold.btn.btn-default.btn-sm.disabled
-			= vote.val
-		- if vote.up?
-			\/
-			%a.btn.btn-default.btn-sm{ href: scuttlebutt.vote_path( vote, val: -1 ), data: { method: :put } }
-				down
+			%a.btn.btn-default.btn-sm{ href: scuttlebutt.votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, val: -1 ) }
+				down vote
 	- else
-		%a.btn.btn-default.btn-sm{ href: scuttlebutt.votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, val: 1 ) }
-			up
-		\/
-		%a.btn.btn-default.btn-sm{ href: scuttlebutt.votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, val: -1 ) }
-			down
-- else
-	Log in
+		%a{ href: '/login' } log in
+		to vote
