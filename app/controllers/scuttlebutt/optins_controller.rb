@@ -9,6 +9,7 @@ module Scuttlebutt
 			if @user.save
 
 				@message = 'Success'
+				@success = true
 
 				log_event( { user: @user, name: 'email_optin', content: "opted into the email list" } )
 

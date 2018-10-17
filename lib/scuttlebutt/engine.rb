@@ -2,7 +2,7 @@ module Scuttlebutt
 
 	class << self
 		mattr_accessor :discussion_path
-		self.discussion_path = 'forums'
+		self.discussion_path = 'discussions'
 
 		mattr_accessor :discussion_topic_path
 		self.discussion_topic_path = 'topics'
