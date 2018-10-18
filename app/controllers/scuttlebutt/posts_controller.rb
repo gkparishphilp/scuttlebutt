@@ -28,9 +28,9 @@ module Scuttlebutt
 		end
 
 		def destroy
-			authorize!( :admin, UserPost )
 			@post = Post.find( params[:id] )
-			@post.update( status: 'deleted' )
+			raise Exception.new( "Permission Denied" ) unless @post.user == current_user
+			@post.update( status: 'trash' )
 
 			respond_to do |format|
 				format.html {
@@ -43,6 +43,7 @@ module Scuttlebutt
 
 		def edit
 			@post = Post.where( user: current_user ).find( params[:id] )
+			raise Exception.new( "Permission Denied" ) unless @post.user == current_user
 		end
 
 		def show
@@ -51,16 +52,22 @@ module Scuttlebutt
 
 		def update
 			@post = Post.where( user: current_user ).find( params[:id] )
+			raise Exception.new( "Permission Denied" ) unless @post.user == current_user
 
 			@post.attributes = post_params
 			@post.sanitized_content = ActionView::Base.full_sanitizer.sanitize( @post.content ) if @post.content
 
 			respond_to do |format|
 				if @post.save
-					format.html { redirect_to(:back, set_flash: 'Comment updated') }
+					format.html {
+						set_flash 'Success'
+						redirect_to( params[:back] || '/' )
+					}
 					format.js {}
 				else
-					format.html { redirect_to(:back, set_flash: 'Comment could not be updated') }
+					format.html {
+						set_flash 'Unable to perform update'
+						redirect_to( params[:back] || '/' )}
 					format.js {}
 				end
 			end

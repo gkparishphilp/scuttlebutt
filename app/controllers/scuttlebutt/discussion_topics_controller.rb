@@ -28,7 +28,7 @@ module Scuttlebutt
 			@topic = DiscussionTopic.friendly.find( params[:id] )
 			@discussion = @topic.discussion
 
-			if current_user.read_attribute_before_type_cast( :role ).to_i < @discussion.read_attribute_before_type_cast( :availability ).to_i
+			if not( @discussion.anyone? ) && current_user.read_attribute_before_type_cast( :role ).to_i < @discussion.read_attribute_before_type_cast( :availability ).to_i
 				puts "You don't have permission ot access this discussion"
 				redirect_to :back
 				return false

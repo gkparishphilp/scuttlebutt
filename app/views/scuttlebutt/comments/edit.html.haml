@@ -1,0 +1,17 @@
+.container
+	.row
+		.col-12.col-md-6
+			.media
+				%img.mr-3{ src: current_user.avatar, style: 'width: 64px;' }
+				.media-body
+					%h5.mb-0 EDIT COMMENT
+					= form_for @post, as: :post do |f|
+						= hidden_field_tag :back, (params[:back] || request.referrer )
+						= f.hidden_field :type
+						= f.hidden_field :parent_obj_type
+						= f.hidden_field :parent_obj_id
+						= f.hidden_field :status, value: 'active'
+						.form-group.mb-1
+							= f.text_area :content, class: 'form-control auto-size mb-0', placeholder: ''
+						.form-group.mb-0
+							= f.submit 'Update', class: 'btn btn-primary'

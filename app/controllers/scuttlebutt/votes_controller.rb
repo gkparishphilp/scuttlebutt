@@ -83,7 +83,7 @@ module Scuttlebutt
 					@vote_widgets << {
 						parent_obj: parent_obj,
 						selector: vote_widget[:selector],
-						args: (vote_widget.permit(:args) || {}).symbolize_keys,
+						args: (vote_widget.permit(:args) || {}).to_h.symbolize_keys,
 					}
 				end
 			else
@@ -91,7 +91,7 @@ module Scuttlebutt
 				@vote_widgets << {
 					parent_obj: parent_obj,
 					selector: params[:selector],
-					args: (params.permit(:args) || {}).symbolize_keys,
+					args: (params.permit(:args) || {}).to_h.symbolize_keys,
 				}
 			end
 		end
