@@ -75,6 +75,27 @@ module Scuttlebutt
 			end
 		end
 
+		def widget
+			@vote_widgets = []
+			if params[:vote_widgets]
+				params[:vote_widgets].each do |index,vote_widget|
+					parent_obj = vote_widget[:parent_obj_type].constantize.find(vote_widget[:parent_obj_id])
+					@vote_widgets << {
+						parent_obj: parent_obj,
+						selector: vote_widget[:selector],
+						args: (vote_widget.permit(:args) || {}).symbolize_keys,
+					}
+				end
+			else
+				parent_obj = params[:parent_obj_type].constantize.find(params[:parent_obj_id])
+				@vote_widgets << {
+					parent_obj: parent_obj,
+					selector: params[:selector],
+					args: (params.permit(:args) || {}).symbolize_keys,
+				}
+			end
+		end
+
 
 	end
 end

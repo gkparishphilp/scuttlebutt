@@ -1,1 +1,2 @@
-$("#{params[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/comments/widget', locals: {  parent_obj: @parent_obj, args: ( params.require(:args).permit(:per,:page,:comment,:form) || {} ).to_h.symbolize_keys.deep_merge( { comment: { async: true } } ) })}")
+- @comment_widgets.each do |comment_widget|
+	$("#{comment_widget[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/comments/widget', locals: {  parent_obj: comment_widget[:parent_obj], args: ( comment_widget[:args] || {} ).deep_merge( { comment: { async: true } } ) })}")

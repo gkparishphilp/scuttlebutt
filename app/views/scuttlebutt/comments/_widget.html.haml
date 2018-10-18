@@ -6,7 +6,7 @@
 - page = (comments.count.to_f / args[:per].to_i).ceil if args[:page] == :last
 - comments = comments.page( page ).per( args[:per].to_i )
 
-.comments_widget{ class: selector_class, data: { params: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id }, url: scuttlebutt.widget_comments_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args ) } }
+.comments_widget{ class: selector_class, data: { params: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector }.to_json, url: scuttlebutt.widget_comments_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args ) } }
 	- if comments.total_count > 0
 		%h4 Comments (#{comments.total_count})
 		.list-unstyled

@@ -32,7 +32,9 @@ Scuttlebutt::Engine.routes.draw do
 
 	resources :subscriptions
 
-	resources :votes, only: [:create, :destroy, :update, :index]
+	resources :votes, only: [:create, :destroy, :update, :index] do
+		get :widget, on: :collection
+	end
 
 
 end

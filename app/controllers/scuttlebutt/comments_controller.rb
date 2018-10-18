@@ -29,7 +29,24 @@ module Scuttlebutt
 		end
 
 		def widget
-			@parent_obj = params[:parent_obj_type].constantize.find(params[:parent_obj_id])
+			@comment_widgets = []
+			if params[:comment_widgets]
+				params[:comment_widgets].each do |index,comment_widget|
+					parent_obj = comment_widget[:parent_obj_type].constantize.find(comment_widget[:parent_obj_id])
+					@comment_widgets << {
+						parent_obj: parent_obj,
+						selector: comment_widget[:selector],
+						args: (comment_widget.permit(:args) || {}).to_h.symbolize_keys,
+					}
+				end
+			else
+				parent_obj = params[:parent_obj_type].constantize.find(params[:parent_obj_id])
+				@comment_widgets << {
+					parent_obj: parent_obj,
+					selector: params[:selector],
+					args: (params.permit(:args) || {}).to_h.symbolize_keys,
+				}
+			end
 		end
 
 	end

@@ -1,0 +1,1 @@
+$("#{params[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/votes/widget', locals: {  parent_obj: @vote.parent_obj, args: { async: true, vote: @vote } })}")
