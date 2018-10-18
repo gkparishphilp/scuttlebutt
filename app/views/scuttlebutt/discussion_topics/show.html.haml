@@ -43,11 +43,7 @@
 								%img.mr-3{ src: current_user.avatar, style: 'width: 64px;' }
 								.media-body
 									%h5.mb-0 Quick Reply
-									= form_tag scuttlebutt.discussion_posts_path( topic_id: @topic.id ) do
-										.form-group.mb-1
-											= text_area_tag :content, '', class: 'form-control auto-size mb-0', placeholder: ' '
-										.form-group.mb-0
-											= submit_tag 'Add', class: 'btn btn-primary'
+									= render 'scuttlebutt/discussion_posts/form', topic: @topic, args: {}
 						- else
 							%p
 								%a{ href: '/login' } Login

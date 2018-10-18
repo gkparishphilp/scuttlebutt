@@ -1,0 +1,5 @@
+= form_tag scuttlebutt.discussion_posts_path( topic_id: topic.id ) do
+	.form-group.mb-1
+		= text_area_tag :content, '', class: 'form-control auto-size mb-0', placeholder: ' '
+	.form-group.mb-0
+		= submit_tag 'Add', class: 'btn btn-primary'
