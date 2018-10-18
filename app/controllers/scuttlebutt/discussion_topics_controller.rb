@@ -14,6 +14,8 @@ module Scuttlebutt
 			end
 
 			@topic = DiscussionTopic.new( user: current_user, parent_obj_id: @discussion.id, parent_obj_type: @discussion.class.name, subject: params[:subject], content: params[:content] )
+			@topic.sanitized_content = ActionView::Base.full_sanitizer.sanitize( @topic.content ) if @topic.content
+
 			if @topic.save
 				set_flash "Topic Posted"
 			else

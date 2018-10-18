@@ -53,7 +53,7 @@ module Scuttlebutt
 			end
 		end
 
-		def sanitized_content
+		def sanitize_content
 			ActionView::Base.full_sanitizer.sanitize( self.content )
 		end
 

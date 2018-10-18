@@ -1,0 +1,14 @@
+.comments_widget{ class: "comments_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}" }
+
+	- if ( comments = ( args[:comments] || Scuttlebutt::Comment.where( parent_obj: parent_obj ).active.order( created_at: :desc ).page( args[:page] ).per( args[:per] || 20 ) ) ).present?
+
+		%h4 Comments (#{comments.total_count})
+		.list-unstyled
+			- comments.each do |comment|
+				= render 'scuttlebutt/comments/comment', comment: comment, args: {}
+
+			= raw paginate comments
+	-# else
+		%h4 Comments
+
+	= render 'scuttlebutt/comments/form', parent_obj: parent_obj, args: args

@@ -1,6 +1,5 @@
 module Scuttlebutt
-	class CommentsController < ApplicationController
-
+	class CommentsController < PostsController
 
 		def index
 
@@ -25,20 +24,8 @@ module Scuttlebutt
 
 		end
 
-		def edit
-			@post = Post.find( params[:id] )
-
-			render layout: false if params[:layout] == '0'
-		end
-
 		def new
-			@reply_to = Post.find( params[:reply_to_id] ) if params[:reply_to_id].present?
-			render layout: false if params[:layout] == '0'
-		end
-
-		def show
-			@post = Post.find( params[:id] )
-			render layout: false if params[:layout] == '0'
+			@post = Comment.new( user: current_user )
 		end
 
 	end

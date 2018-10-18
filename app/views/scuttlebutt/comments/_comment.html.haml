@@ -1,29 +1,19 @@
-.row.comment_block[comment]
-	.col-sm-2
-		= comment.user.avatar_tag( class: 'img-responsive' )
-	.col-xs-10
-		%strong
-			= comment.user
-		= time_ago_in_words( comment.created_at )
-		ago
-		.content{ style: 'padding: 1em;' }
-			- if comment.reply?
-				.quoted
-					.quote-head
-						In reply to:
-						%a{ href: profile_path( comment.reply_to.user ) }
-							= comment.reply_to.user.avatar_tag( width: 16 )
-							= comment.reply_to.user
-					.quote-body
-						- if comment.reply_to.active?
-							= raw comment.reply_to.content
-						- else
-							&lt;REDACTED&gt;
+.media.mb-3[comment]
+	%img.mr-3{ src: comment.user.avatar, style: 'width: 64px;' }
+	.media-body
+		- if comment.user.respond_to? :url
+			%h6
+				%a{ href: comment.user.url }
+					= comment.user
+		- else
+			%h6.mb-0.pb-0
+				= comment.user
+		.media-text
 			- if comment.content
-				%blockquote.small.color-white
-					= raw comment.content
+				= raw comment.sanitized_content
 		- unless args[:disable_votes]
-			.actions
+			.media-actions
 				= render 'scuttlebutt/votes/widget', parent_obj: comment, args: {}
-
-
+				|
+				= time_ago_in_words( comment.created_at )
+				ago

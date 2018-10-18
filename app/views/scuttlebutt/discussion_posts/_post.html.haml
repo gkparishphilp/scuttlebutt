@@ -1,9 +1,18 @@
 .media.mb-3[post]
-	%img.mr-3{ src: post.user.avatar, style: 'width: 64px;' }
+	- if post.user.respond_to? :url
+		%a{ href: post.user.url }
+			%img.mr-3{ src: post.user.avatar, style: 'width: 64px;' }
+	- else
+		%img.mr-3{ src: post.user.avatar, style: 'width: 64px;' }
 	.media-body
 		.media-byline
-			%strong
-				= post.user
+			- if post.user.respond_to? :url
+				%a{ href: post.user.url }
+					%strong
+						= post.user
+			- else
+				%strong
+					= post.user
 			= time_ago_in_words( post.created_at )
 			ago
 		.media-text

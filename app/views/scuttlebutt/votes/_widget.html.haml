@@ -1,4 +1,4 @@
-%div.votes_widget{ class: "votes_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}" }
+%span.votes_widget{ class: "votes_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}" }
 	%span.badge.badge-info
 		= Scuttlebutt::Vote.where( parent_obj: parent_obj, user: current_user ).sum(:val)
 	%strong score

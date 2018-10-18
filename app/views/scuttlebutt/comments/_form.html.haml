@@ -1,0 +1,19 @@
+
+- if current_user.present?
+	.media
+		%img.mr-3{ src: current_user.avatar, style: 'width: 64px;' }
+		.media-body
+			%h5.mb-0 LEAVE A COMMENT
+			= form_for Scuttlebutt::Comment.new( parent_obj: parent_obj, user: current_user ), as: :post, url: scuttlebutt.comments_path() do |f|
+				= f.hidden_field :type
+				= f.hidden_field :parent_obj_type
+				= f.hidden_field :parent_obj_id
+				= f.hidden_field :status, value: 'active'
+				.form-group.mb-1
+					= f.text_area :content, class: 'form-control auto-size mb-0', placeholder: ''
+				.form-group.mb-0
+					= f.submit 'Add', class: 'btn btn-primary'
+- else
+	%p
+		%a{ href: '/login' } Login
+		to comment
