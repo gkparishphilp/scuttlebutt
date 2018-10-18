@@ -3,7 +3,9 @@ Scuttlebutt::Engine.routes.draw do
 
 	match '/comment_on/:type/:id' => 'user_posts#create', as: 'comment_on', via: [:get, :post]
 
-	resources :comments
+	resources :comments do
+		get :widget, on: :collection
+	end
 
 	resources :contacts do
 		get :thank_you, on: :collection, path: 'thank-you'

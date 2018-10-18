@@ -28,5 +28,9 @@ module Scuttlebutt
 			@post = Comment.new( user: current_user )
 		end
 
+		def widget
+			@parent_obj = params[:parent_obj_type].constantize.find(params[:parent_obj_id])
+		end
+
 	end
 end

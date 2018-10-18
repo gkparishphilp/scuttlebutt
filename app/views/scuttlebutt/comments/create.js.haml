@@ -1,0 +1,1 @@
+$("#{params[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/comments/widget', locals: {  parent_obj: @post.parent_obj, args: { page: :last, comment: { async: true } } })}")

@@ -1,14 +1,17 @@
-.comments_widget{ class: "comments_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}" }
+.comments_widget{ class: "comments_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}", data: { params: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id }, url: scuttlebutt.widget_comments_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: ".comments_widget.comments_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}" ) } }
 
-	- if ( comments = ( args[:comments] || Scuttlebutt::Comment.where( parent_obj: parent_obj ).active.order( created_at: :desc ).page( args[:page] ).per( args[:per] || 20 ) ) ).present?
-
+	- if ( comments = ( args[:comments] || Scuttlebutt::Comment.where( parent_obj: parent_obj ).active.order( created_at: :asc ) ) ).present?
+		- if args[:page] == :last
+			- comments = comments.page( (comments.count.to_f / (args[:per] || 20)).ceil ).per( args[:per] || 20 )
+		- else
+			- comments = comments.page( args[:page] ).per( args[:per] || 20 )
 		%h4 Comments (#{comments.total_count})
 		.list-unstyled
 			- comments.each do |comment|
-				= render 'scuttlebutt/comments/comment', comment: comment, args: {}
+				= render 'scuttlebutt/comments/comment', comment: comment, args: { selector: ".comments_widget.comments_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}" }.merge(args[:comment] || {})
 
 			= raw paginate comments
 	-# else
 		%h4 Comments
 
-	= render 'scuttlebutt/comments/form', parent_obj: parent_obj, args: args
+	= render 'scuttlebutt/comments/form', parent_obj: parent_obj, args: { selector: ".comments_widget.comments_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}" }.merge(args[:form] || {})
