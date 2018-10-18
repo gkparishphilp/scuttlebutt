@@ -28,7 +28,9 @@ Scuttlebutt::Engine.routes.draw do
 		get :thank_you, on: :collection, path: 'thank-you'
 	end
 
-	resources :posts
+	resources :posts do
+		put :report, on: :member
+	end
 
 	resources :subscriptions
 

@@ -46,6 +46,20 @@ module Scuttlebutt
 			raise Exception.new( "Permission Denied" ) unless @post.user == current_user
 		end
 
+		def report
+			@post = Post.find( params[:id] )
+
+			log_event( { name: 'report', category: 'social', on: @post, content: "reported the post #{@post} (#{@post.id}) for moderation." } )
+
+			respond_to do |format|
+				format.html {
+					set_flash 'Success'
+					redirect_back( fallback_location: '/' )
+				}
+				format.js {}
+			end
+		end
+
 		def show
 			@post = Post.find( params[:id] )
 		end
