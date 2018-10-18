@@ -1,6 +1,6 @@
-- selector_class = "votes_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}"
-- selector = ".votes_widget.#{selector_class}"
-%span.votes_widget{ class: selector_class, data: { params: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args }.to_json, url: scuttlebutt.widget_votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args ) } }
+- selector_class = "scuttlebutt_votes_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}"
+- selector = ".scuttlebutt_votes_widget.#{selector_class}"
+%span.scuttlebutt_votes_widget{ class: selector_class, data: { params: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args }.to_json, url: scuttlebutt.widget_votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args ) } }
 	%span.badge.badge-info
 		= Scuttlebutt::Vote.where( parent_obj: parent_obj, user: current_user ).sum(:val)
 	%strong score

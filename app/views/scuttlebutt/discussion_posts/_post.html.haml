@@ -1,4 +1,6 @@
-.media.mb-3[post]
+- selector_class = "scuttlebutt_discussion_post_#{post.class.base_class.name.underscore.gsub(/\//,'__')}_#{post.id}"
+- selector = ".scuttlebutt_discussion_post.#{selector_class}"
+.media.scuttlebutt_discussion_post.mb-3[post]{ class: selector_class }
 	- if post.user.respond_to? :url
 		%a{ href: post.user.url }
 			%img.mr-3{ src: post.user.avatar, style: 'width: 64px;' }
@@ -19,6 +21,8 @@
 			- if post.content
 				%blockquote.small
 					= raw post.content
-		- unless args[:disable_votes]
-			.media-actions
+		.media-actions
+			- unless args[:disable_votes]
 				= render 'scuttlebutt/votes/widget', parent_obj: post, args: {}
+				|
+			%a{ href: scuttlebutt.report_post_path( post.id, selector: selector ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report

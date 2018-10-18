@@ -34,8 +34,11 @@
 						- if @topic.content
 							%blockquote.small
 								= raw @topic.sanitized_content
-					.media-actions
+					.media-actions#topic_actions
 						= render 'scuttlebutt/votes/widget', parent_obj: @topic, args: {}
+						|
+						%a{ href: scuttlebutt.report_post_path( @topic.id, selector: '#topic_actions' ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report
+
 
 					.media-form.mt-4
 						- if current_user.present?

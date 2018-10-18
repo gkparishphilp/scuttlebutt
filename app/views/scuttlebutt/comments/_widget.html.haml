@@ -1,12 +1,12 @@
-- selector_class = "comments_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}"
-- selector = ".comments_widget.#{selector_class}"
+- selector_class = "scuttlebutt_comments_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}"
+- selector = ".scuttlebutt_comments_widget.#{selector_class}"
 - args = { per: 20, page: 1 }.merge(args)
 - comments = Scuttlebutt::Comment.where( parent_obj: parent_obj ).active.order( created_at: :asc )
 - page = args[:page]
 - page = (comments.count.to_f / args[:per].to_i).ceil if args[:page] == :last
 - comments = comments.page( page ).per( args[:per].to_i )
 
-.comments_widget{ class: selector_class, data: { params: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector }.to_json, url: scuttlebutt.widget_comments_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args ) } }
+.scuttlebutt_comments_widget{ class: selector_class, data: { params: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector }.to_json, url: scuttlebutt.widget_comments_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args ) } }
 	- if comments.total_count > 0
 		%h4 Comments (#{comments.total_count})
 		.list-unstyled

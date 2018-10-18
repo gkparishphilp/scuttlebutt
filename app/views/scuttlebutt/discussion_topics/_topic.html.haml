@@ -1,4 +1,6 @@
-.media.mb-3[topic]
+- selector_class = "scuttlebutt_discussion_topic_#{topic.class.base_class.name.underscore.gsub(/\//,'__')}_#{topic.id}"
+- selector = ".scuttlebutt_discussion_topic.#{selector_class}"
+.media.mb-3.scuttlebutt_discussion_topic[topic]{ class: selector_class }
 	%a{ href: topic.url }
 		%img.mr-3{ src: topic.user.avatar, style: 'width: 64px;' }
 	.media-body
@@ -31,6 +33,8 @@
 					= link_to topic.last_post.user.username, topic.last_post.user.url
 				- else
 					= topic.last_post.user.username
-		-# unless args[:disable_votes]
-			.media-actions
+		.media-actions
+			- unless args[:disable_votes]
 				= render 'scuttlebutt/votes/widget', parent_obj: topic, args: {}
+				|
+			%a{ href: scuttlebutt.report_post_path( topic.id, selector: selector ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report

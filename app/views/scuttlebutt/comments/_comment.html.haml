@@ -1,4 +1,6 @@
-.media.mb-3[comment]
+- selector_class = "scuttlebutt_comment_#{comment.class.base_class.name.underscore.gsub(/\//,'__')}_#{comment.id}"
+- selector = ".scuttlebutt_comment.#{selector_class}"
+.media.comment.mb-3[comment]{ class: selector_class }
 	%img.mr-3{ src: comment.user.avatar, style: 'width: 64px;' }
 	.media-body
 		- if comment.user.respond_to? :url
@@ -14,6 +16,8 @@
 		- unless args[:disable_votes]
 			.media-actions
 				= render 'scuttlebutt/votes/widget', parent_obj: comment, args: {}
+				|
+				%a.dropdown-item{ href: scuttlebutt.report_post_path( comment, selector: selector ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report
 				|
 				= time_ago_in_words( comment.created_at )
 				ago
