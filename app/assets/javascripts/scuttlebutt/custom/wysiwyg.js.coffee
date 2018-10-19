@@ -15,7 +15,6 @@
 #= require pulitzer/plugins/froala/js/plugins/video
 
 init_wysiwyg = (container)->
-	console.log('init_wysiwyg')
 
 	try
 
@@ -115,7 +114,6 @@ init_wysiwyg = (container)->
 $(document).ready ()->
 	$(document).trigger('ready')
 $(document).on 'ready', (e)->
-	console.log('ready!!!',e.target)
 	init_wysiwyg( $(e.target) )
 $(document).on 'new-content', (e)->
 	init_wysiwyg( $(e.target) )
