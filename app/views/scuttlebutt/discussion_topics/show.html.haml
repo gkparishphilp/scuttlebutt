@@ -49,16 +49,17 @@
 
 
 					.media-form
-						- if current_user.present?
-							.media
+						.media
+							- if current_user.present?
 								%img.mr-3{ src: current_user.avatar, style: 'width: 64px;' }
-								.media-body
-									%h5.mb-0 Post a Reply
-									= render 'scuttlebutt/discussion_posts/form', topic: @topic, args: {}
-						- else
-							%p
-								%a{ href: '/login' } Login
-								to comment
+							- else
+								%img.mr-3{ src: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=', style: 'width: 64px;' }
+							.media-body
+								%h5.mb-0 Post a Reply
+
+								- unless current_user.present?
+									= render 'application/register_then'
+								= render 'scuttlebutt/discussion_posts/form', topic: @topic, args: {}
 
 
 = render 'scuttlebutt/discussion_posts/new_modal'
