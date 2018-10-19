@@ -1,7 +1,10 @@
 
 - if current_user.present?
 	.media
-		%img.mr-3{ src: current_user.avatar, style: 'width: 64px;' }
+		- if args[:async]
+			%img.mr-3{ src: current_user.avatar, style: 'width: 64px;' }
+		- else
+			%img.mr-3{ src: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=', style: 'width: 64px;' }
 		.media-body
 			%h5.mb-0 LEAVE A COMMENT
 			= form_for Scuttlebutt::Comment.new( parent_obj: parent_obj, user: current_user ), as: :post, url: scuttlebutt.comments_path( args: args[:widget] ), remote: true do |f|
