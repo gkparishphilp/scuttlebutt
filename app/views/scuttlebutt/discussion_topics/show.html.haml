@@ -40,25 +40,25 @@
 						%a{ href: scuttlebutt.report_post_path( @topic.id, selector: '#topic_actions' ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report
 
 
-					.media-form.mt-4
-						- if current_user.present?
-							.media
-								%img.mr-3{ src: current_user.avatar, style: 'width: 64px;' }
-								.media-body
-									%h5.mb-0 Quick Reply
-									= render 'scuttlebutt/discussion_posts/form', topic: @topic, args: {}
-						- else
-							%p
-								%a{ href: '/login' } Login
-								to comment
 
-
-					.list-unstyled
+					.list-unstyled.mt-4
 						- @posts.each do |post|
 							= render 'scuttlebutt/discussion_posts/post', post: post, args: {}
 
 						= raw paginate @posts
 
+
+					.media-form
+						- if current_user.present?
+							.media
+								%img.mr-3{ src: current_user.avatar, style: 'width: 64px;' }
+								.media-body
+									%h5.mb-0 Post a Reply
+									= render 'scuttlebutt/discussion_posts/form', topic: @topic, args: {}
+						- else
+							%p
+								%a{ href: '/login' } Login
+								to comment
 
 
 = render 'scuttlebutt/discussion_posts/new_modal'

@@ -34,7 +34,7 @@ module Scuttlebutt
 				return false
 			end
 
-			@posts = @topic.posts.active.order( created_at: :desc ).page( params[:page] )
+			@posts = @topic.posts.active.order( created_at: :asc ).page( params[:page] )
 		end
 
 	end

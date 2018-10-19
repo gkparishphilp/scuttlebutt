@@ -20,7 +20,7 @@ module Scuttlebutt
 		# end
 
 		def preview
-			self.sanitized_content
+			self.sanitize_content
 		end
 
 		def topic
