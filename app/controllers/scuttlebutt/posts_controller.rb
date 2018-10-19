@@ -7,7 +7,7 @@ module Scuttlebutt
 
 			@post = Post.new( type: params[:post][:type], user: current_user )
 			@post.attributes = post_params
-			@post.sanitized_content = ActionView::Base.full_sanitizer.sanitize( @post.content ) if @post.content
+			@post.sanitized_content = ActionController::Base.helpers.sanitize( @post.content, tags: Scuttlebutt.post_allowed_tags, attributes: Scuttlebutt.post_allowed_attributes ) if @post.content
 
 			respond_to do |format|
 				if @post.save
@@ -69,7 +69,7 @@ module Scuttlebutt
 			raise Exception.new( "Permission Denied" ) unless @post.user == current_user
 
 			@post.attributes = post_params
-			@post.sanitized_content = ActionView::Base.full_sanitizer.sanitize( @post.content ) if @post.content
+			@post.sanitized_content = ActionController::Base.helpers.sanitize( @post.content, tags: Scuttlebutt.post_allowed_tags, attributes: Scuttlebutt.post_allowed_attributes ) if @post.content
 
 			respond_to do |format|
 				if @post.save

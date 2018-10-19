@@ -11,7 +11,8 @@
 				= f.hidden_field :parent_obj_id
 				= f.hidden_field :status, value: 'active'
 				.form-group.mb-1
-					= f.text_area :content, class: 'form-control auto-size mb-0', placeholder: ''
+					.form-control.form-control-wysiwyg-inline
+						= f.text_area :content, class: 'form-control wysiwyg-inline', placeholder: 'start typing...', data: { wysiwyg: { height_min: 50, toolbar_preset: 'comment', placeholder: 'start typing', object_class: parent_obj.class.base_class.name, object_id: parent_obj.id }.to_json }
 				.form-group.mb-0
 					= f.submit 'Add', class: 'btn btn-primary'
 - else

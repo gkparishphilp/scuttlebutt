@@ -14,7 +14,8 @@
 						= label_tag :subject
 						= text_field_tag :subject, '', class: 'form-control'
 					.form-group
-						= text_area_tag :content, '', class: 'form-control auto-size', placeholder: ' '
+						.form-control.form-control-wysiwyg-inline
+							= text_area_tag :content, '', class: 'form-control wysiwyg-inline', placeholder: 'start typing...', data: { wysiwyg: { height_min: 50, toolbar_preset: 'comment', placeholder: 'start typing', object_class: @discussion.class.base_class.name, object_id: @discussion.id }.to_json }
 
 				.modal-footer
 					.btn.btn-default.pull-left{ type: :button, 'data-dismiss' => 'modal' }

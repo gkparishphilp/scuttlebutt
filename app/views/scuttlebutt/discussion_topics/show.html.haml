@@ -32,7 +32,7 @@
 						ago
 					.media-text
 						- if @topic.content
-							%blockquote.small
+							%blockquote.small.fr-view
 								= raw @topic.sanitized_content
 					.media-actions#topic_actions
 						= render 'scuttlebutt/votes/widget', parent_obj: @topic, args: {}

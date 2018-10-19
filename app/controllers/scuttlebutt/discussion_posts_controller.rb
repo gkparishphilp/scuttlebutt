@@ -7,7 +7,7 @@ module Scuttlebutt
 		def create
 			@topic = DiscussionTopic.active.friendly.find( params[:topic_id] )
 			@post = DiscussionPost.new( user: current_user, parent_obj_id: @topic.id, parent_obj_type: @topic.class.name, content: params[:content] )
-			@post.sanitized_content = ActionView::Base.full_sanitizer.sanitize( @post.content ) if @post.content
+			@post.sanitized_content = ActionController::Base.helpers.sanitize( @post.content, tags: Scuttlebutt.post_allowed_tags, attributes: Scuttlebutt.post_allowed_attributes ) if @post.content
 
 			if @post.save
 				set_flash "Posted"

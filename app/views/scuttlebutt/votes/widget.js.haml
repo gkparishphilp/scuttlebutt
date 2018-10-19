@@ -1,2 +1,3 @@
 - @vote_widgets.each do |vote_widget|
 	$("#{vote_widget[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/votes/widget', locals: {  parent_obj: vote_widget[:parent_obj], args: vote_widget[:args].deep_merge({ async: true }) })}")
+	$("#{vote_widget[:selector]}").trigger('new-content')

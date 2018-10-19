@@ -1,1 +1,2 @@
 $("#{params[:selector]}").after("<div class='alert alert-success' role='alert'>The post has been reported for moderation</div>")
+$("#{params[:selector]}").trigger('new-content')

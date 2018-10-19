@@ -12,7 +12,7 @@
 				= comment.user
 		.media-text
 			- if comment.content
-				= raw comment.sanitized_content
+				.fr-view= raw comment.sanitized_content
 		- unless args[:disable_votes]
 			.media-actions
 				= render 'scuttlebutt/votes/widget', parent_obj: comment, args: {}

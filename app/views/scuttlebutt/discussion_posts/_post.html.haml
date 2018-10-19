@@ -20,7 +20,7 @@
 		.media-text
 			- if post.content
 				%blockquote.small
-					= raw post.content
+					.fr-view= raw post.sanitized_content
 		.media-actions
 			- unless args[:disable_votes]
 				= render 'scuttlebutt/votes/widget', parent_obj: post, args: {}

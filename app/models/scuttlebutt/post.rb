@@ -19,6 +19,8 @@ module Scuttlebutt
 		has_many 		:replies, class_name: Post.name, foreign_key: 'reply_to_id', inverse_of: :reply_to
 		belongs_to 		:reply_to, class_name: Post.name, inverse_of: :replies, optional: true
 
+		has_many_attached :embedded_attachments
+
 		acts_as_taggable_array_on :tags
 
 		include FriendlyId
@@ -54,7 +56,7 @@ module Scuttlebutt
 		end
 
 		def sanitize_content
-			ActionView::Base.full_sanitizer.sanitize( self.content )
+			ActionView::Base.full_sanitizer.sanitize( self.content, tags: Scuttlebutt.post_allowed_tags, attributes: Scuttlebutt.post_allowed_attributes )
 		end
 
 		def word_count
