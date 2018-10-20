@@ -28,6 +28,10 @@ module Scuttlebutt
 			self.subject
 		end
 
+		def root_parent_obj
+			self
+		end
+
 		def to_s
 			self.subject
 		end

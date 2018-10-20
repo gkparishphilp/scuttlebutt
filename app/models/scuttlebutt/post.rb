@@ -47,6 +47,16 @@ module Scuttlebutt
 			not( reply_to_id.nil? )
 		end
 
+		def root_parent_obj
+			if self.parent_obj.nil?
+				self
+			elsif self.parent_obj.is_a? Scuttlebutt::Post
+				self.root_parent_obj
+			else
+				self.parent_obj
+			end
+		end
+
 		def root_user_post
 			if reply?
 				reply_to.root_user_post || reply_to

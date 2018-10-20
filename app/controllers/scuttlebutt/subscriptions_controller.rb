@@ -7,15 +7,28 @@ module Scuttlebutt
 		def create
 			@sub = Subscription.where( user_id: current_user.id, parent_obj_type: params[:obj_type], parent_obj_id: params[:obj_id] ).first_or_initialize
 			@button_class = params[:button_class]
-			
+
 			respond_to do |format|
-			  if @sub.active!
-					format.html { redirect_to(:back, set_flash: 'Subscribed') }
-					format.js { render 'create' }
-			  else
-					format.html { redirect_to(:back, set_flash: 'Error') }
-					format.js { render 'create' }
-			  end
+
+				if @sub.persisted?
+				  if @sub.active!
+						format.html { redirect_to(:back, set_flash: 'Subscribed') }
+						format.js { render 'create' }
+				  else
+						format.html { redirect_to(:back, set_flash: 'Error') }
+						format.js { render 'create' }
+				  end
+				else
+				  if @sub.active!
+						log_event( name: 'follow', cateogry: 'social', on: @sub.parent_obj, content: "started following #{@sub.parent_obj}" )
+
+						format.html { redirect_to(:back, set_flash: 'Subscribed') }
+						format.js { render 'create' }
+				  else
+						format.html { redirect_to(:back, set_flash: 'Error') }
+						format.js { render 'create' }
+				  end
+				end
 			end
 
 		end

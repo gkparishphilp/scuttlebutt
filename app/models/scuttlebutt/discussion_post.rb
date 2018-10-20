@@ -23,6 +23,10 @@ module Scuttlebutt
 			self.sanitize_content
 		end
 
+		def root_parent_obj
+			topic
+		end
+
 		def topic
 			DiscussionTopic.find_by( id: self.parent_obj_id )
 		end

@@ -15,6 +15,16 @@ module Scuttlebutt
 			if @vote.save
 				@vote.update_parent_caches
 
+				log_event( name: 'vote', cateogry: 'social', on: @vote.parent_obj, content: "voted #{@vote.val} #{@vote.parent_obj}" )
+
+				if params[:optin] == '1' && @vote.up?
+					parent_obj = @vote.parent_obj
+					parent_obj = parent_obj.root_parent_obj if parent_obj.respond_to? :root_parent_obj
+					unless ( subscription = Scuttlebutt::Subscription.find_or_initialize_by( user: @vote.user, parent_obj: parent_obj ) ).persisted?
+						log_event( name: 'follow', cateogry: 'social', on: parent_obj, content: "started following #{parent_obj}" ) if subscription.save
+					end
+				end
+
 				respond_to do |format|
 					format.html { redirect_back( fallback_location: '/' ) }
 					format.js {}
@@ -66,6 +76,8 @@ module Scuttlebutt
 			puts "@vote #{@vote.to_json}"
 
 			if @vote.save
+				log_event( name: 'changed_vote', cateogry: 'social', on: @vote.parent_obj, content: "voted #{@vote.val} #{@vote.parent_obj}" )
+
 				@vote.update_parent_caches
 			end
 

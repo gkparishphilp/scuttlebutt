@@ -11,6 +11,13 @@ module Scuttlebutt
 
 			if @post.save
 				set_flash "Posted"
+
+				log_event( name: 'add_post', cateogry: 'social', on: @post.parent_obj, content: "posted to #{@post.parent_obj}" )
+
+				if params[:optin] == '1' && not( ( subscription = Scuttlebutt::Subscription.find_or_initialize_by( user: @post.user, parent_obj: @post.root_parent_obj ) ).persisted? )
+					log_event( name: 'follow', cateogry: 'social', on: @post.root_parent_obj, content: "started following #{@post.root_parent_obj}" ) if subscription.save
+				end
+
 			else
 				set_flash "Couldn't create Post", :danger, @post
 			end

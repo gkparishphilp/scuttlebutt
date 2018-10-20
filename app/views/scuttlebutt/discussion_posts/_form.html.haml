@@ -1,4 +1,5 @@
 = form_tag scuttlebutt.discussion_posts_path( topic_id: topic.id ) do
+	= hidden_field_tag :optin, args[:optin] || 1
 	.form-group.mb-1
 		.form-control.form-control-wysiwyg-inline
 			= text_area_tag :content, '', class: 'form-control wysiwyg-inline', placeholder: 'start typing...', data: { wysiwyg: { height_min: 50, toolbar_preset: 'comment', placeholder: 'start typing', object_class: topic.class.base_class.name, object_id: topic.id }.to_json }

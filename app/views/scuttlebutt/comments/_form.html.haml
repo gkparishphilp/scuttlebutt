@@ -11,6 +11,7 @@
 			- unless current_user.present?
 				= render 'application/register_then'
 			= hidden_field_tag :selector, args[:selector]
+			= hidden_field_tag :optin, args[:optin] || 1
 			= f.hidden_field :type
 			= f.hidden_field :parent_obj_type
 			= f.hidden_field :parent_obj_id

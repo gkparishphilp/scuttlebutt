@@ -18,6 +18,8 @@ module Scuttlebutt
 
 			if @topic.save
 				set_flash "Topic Posted"
+
+				log_event( name: 'add_topic', cateogry: 'social', on: @topic.parent_obj, content: "created a topic #{@post}" )
 			else
 				set_flash "Couldn't create Topic", :danger, @topic
 			end
