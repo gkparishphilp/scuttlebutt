@@ -17,3 +17,11 @@ $( document ).ready ->
 		vote_widgets.push( $(this).data('params') )
 	if vote_widgets.length > 0
 		$.getScript( vote_widget_url + "?" + jQuery.param( { vote_widgets: vote_widgets } ) )
+
+	subscription_widgets = []
+	subscription_widget_url = null
+	$('.has_current_user .scuttlebutt_subscriptions_widget').each ->
+		subscription_widget_url ||= $(this).data('url').split("?")[0]
+		subscription_widgets.push( $(this).data('params') )
+	if subscription_widgets.length > 0
+		$.getScript( subscription_widget_url + "?" + jQuery.param( { subscription_widgets: subscription_widgets } ) )

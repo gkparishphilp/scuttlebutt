@@ -5,27 +5,39 @@ module Scuttlebutt
 		before_action :authenticate_user!
 
 		def create
-			@sub = Subscription.where( user_id: current_user.id, parent_obj_type: params[:obj_type], parent_obj_id: params[:obj_id] ).first_or_initialize
-			@button_class = params[:button_class]
+			subscription_params = params.require(:subscription).permit(:parent_obj_type, :parent_obj_id)
+			@sub = Subscription.where( subscription_params.merge( user_id: current_user.id ) ).first_or_initialize
 
 			respond_to do |format|
 
 				if @sub.persisted?
 				  if @sub.active!
-						format.html { redirect_to(:back, set_flash: 'Subscribed') }
+						format.html {
+							set_flash "Subscribed", :success
+							redirect_back( fallback_location: '/' )
+						}
 						format.js { render 'create' }
-				  else
-						format.html { redirect_to(:back, set_flash: 'Error') }
+					else
+						format.html {
+							set_flash "Unable to subscribe", :error
+							redirect_back( fallback_location: '/' )
+						}
 						format.js { render 'create' }
 				  end
 				else
 				  if @sub.active!
 						log_event( name: 'follow', cateogry: 'social', on: @sub.parent_obj, content: "started following #{@sub.parent_obj}" )
 
-						format.html { redirect_to(:back, set_flash: 'Subscribed') }
+						format.html {
+							set_flash "Subscribed", :success
+							redirect_back( fallback_location: '/' )
+						}
 						format.js { render 'create' }
-				  else
-						format.html { redirect_to(:back, set_flash: 'Error') }
+					else
+						format.html {
+							set_flash "Unable to subscribe", :error
+							redirect_back( fallback_location: '/' )
+						}
 						format.js { render 'create' }
 				  end
 				end
@@ -35,21 +47,20 @@ module Scuttlebutt
 
 
 		def destroy
-			@sub_id = params[:id]
-			if @sub_id == '0'
-				@sub = Subscription.active.where( user_id: current_user.id ).find_by( parent_obj_type: params[:obj_type], parent_obj_id: params[:obj_id] )
-				@sub_id = @sub.id
-			else
-				@sub = ObjectSubscription.active.where( user_id: current_user.id ).find_by( id: @sub_id )
-			end
-			@button_class = params[:button_class]
+			@sub = Subscription.where( user: current_user ).find( params[:id] )
 
 			respond_to do |format|
-				if @sub.present? && @sub.delete
-					format.html { redirect_to(:back, set_flash: 'Unsubscribed') }
+				if @sub.present? && @sub.active? && @sub.trash!
+						format.html {
+							set_flash "Unsubscribed", :success
+							redirect_back( fallback_location: '/' )
+						}
 					format.js { render 'destroy' }
 				else
-					format.html { redirect_to(:back, set_flash: 'Could not unsubscribe') }
+					format.html {
+						set_flash "Could not unsubscribe", :error
+						redirect_back( fallback_location: '/' )
+					}
 					format.js { render 'destroy' }
 				end
 			end
@@ -63,25 +74,47 @@ module Scuttlebutt
 
 
 		def update
-			@sub_id = params[:id]
-			if @sub_id == '0'
-				@sub = Subscription.active.where( user_id: current_user.id ).find_by( parent_obj_type: params[:obj_type], parent_obj_id: params[:obj_id] )
-				@sub_id = @sub.id
-			else
-				@sub = Subscription.active.where( user_id: current_user.id ).find_by( id: @sub_id )
+			@sub = Subscription.where( user: current_user ).find( params[:id] )
+
+			@sub.attributes = params.require( :subscription ).permit( :mute, :availability, :status )
+
+			respond_to do |format|
+				if @sub.save
+						format.html {
+							set_flash "Success", :success
+							redirect_back( fallback_location: '/' )
+						}
+					format.js { render 'update' }
+				else
+					format.html {
+						set_flash "Error", :error
+						redirect_back( fallback_location: '/' )
+					}
+					format.js { render 'update' }
+				end
 			end
 
-			@sub.attributes = params.require( :object_subscription ).permit( :mute, :availability, :status )
+		end
 
-			if @sub.save
-				set_flash "Success"
-				redirect_back( fallback_location: '/' )
-
+		def widget
+			@subscription_widgets = []
+			if params[:subscription_widgets]
+				params[:subscription_widgets].each do |index,subscription_widget|
+					parent_obj = subscription_widget[:parent_obj_type].constantize.find(subscription_widget[:parent_obj_id])
+					@subscription_widgets << {
+						parent_obj: parent_obj,
+						selector: subscription_widget[:selector],
+						args: (subscription_widget.permit(:args => {}) || { args: {} })[:args].to_h.symbolize_keys,
+					}
+				end
 			else
-				set_flash "Error"
-				redirect_back( fallback_location: '/' )
+				parent_obj = params[:parent_obj_type].constantize.find(params[:parent_obj_id])
+				@subscription_widgets << {
+					parent_obj: parent_obj,
+					selector: params[:selector],
+					args: (params.permit(:args => {}) || { args: {} })[:args].to_h.symbolize_keys,
+				}
 			end
-
 		end
 
 

@@ -1,8 +1,17 @@
-
-%span{ style: args[:css_style], id: args[:css_id] || 'subscribe_widget', class: "subscription-widget subscription-widget-#{parent_obj.class.name.underscore.gsub('/','__')}-#{parent_obj.id} #{( (sub = Scuttlebutt::Subscription.active.where( user_id: current_user.try( :id ), parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id ).first).present? ? 'subscription-widget-subscribed' : '' )}" }
-	= link_to scuttlebutt.object_subscription_path( 0, obj_type: parent_obj.class.name, obj_id: parent_obj.id ), class: 'subscription-widget-control subscription-widget-unsubscribe', data: { method: :delete }, title: 'Unsubscribe' do
-		%i{ class: args[:unsub_icon_class] || 'fa fa-star' }
-		= args[:unsub_text]
-	= link_to scuttlebutt.object_subscriptions_path( obj_type: parent_obj.class.name, obj_id: parent_obj.id ), class: 'subscription-widget-control subscription-widget-subscribe', method: :post, title:'Keep an eye on this' do
-		%i{ class: args[:sub_icon_class] || 'fa fa-star-o' }
-		= args[:sub_text]
+- selector_class = "scuttlebutt_subscriptions_widget_#{parent_obj.class.base_class.name.underscore.gsub(/\//,'__')}_#{parent_obj.id}"
+- selector = ".scuttlebutt_subscriptions_widget.#{selector_class}"
+%span.scuttlebutt_subscriptions_widget{ class: selector_class, data: { params: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args }.to_json, url: scuttlebutt.widget_subscriptions_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, selector: selector, args: args ) } }
+	- if current_user.present?
+		- if ( subscription = (args[:subscription] || Scuttlebutt::Subscription.where( parent_obj: parent_obj, user: current_user ).first) ).try(:persisted?)
+			- if subscription.active?
+				%a{ class: args[:css_class], href: scuttlebutt.subscription_path( subscription, subscription: { status: :trash }, selector: selector, args: args ), data: { method: :put, remote: true } }
+					Subscribed
+			- else
+				%a{ class: args[:css_class], href: scuttlebutt.subscription_path( subscription, subscription: { status: :active }, selector: selector, args: args ), data: { method: :put, remote: true } }
+					Subscribe
+		- else
+			%a{ class: args[:css_class], href: scuttlebutt.subscriptions_path( subscription: { parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id }, selector: selector, args: args ), data: { method: :post, remote: true } }
+				Subscribe
+	- else
+		%a{ href: '/login' } log in
+		to subscribe

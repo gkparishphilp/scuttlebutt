@@ -38,7 +38,8 @@
 						= render 'scuttlebutt/votes/widget', parent_obj: @topic, args: {}
 						|
 						%a{ href: scuttlebutt.report_post_path( @topic.id, selector: '#topic_actions' ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report
-
+						|
+						= render 'scuttlebutt/subscriptions/widget', parent_obj: @topic, args: {}
 
 
 					.list-unstyled.mt-4

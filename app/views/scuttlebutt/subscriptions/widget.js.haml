@@ -1,0 +1,3 @@
+- @subscription_widgets.each do |subscription_widget|
+	$("#{subscription_widget[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/subscriptions/widget', locals: {  parent_obj: subscription_widget[:parent_obj], args: subscription_widget[:args].deep_merge({ async: true }) })}")
+	$("#{subscription_widget[:selector]}").trigger('new-content')
