@@ -35,11 +35,7 @@
 							%blockquote.small.fr-view
 								= raw @topic.sanitized_content
 					.media-actions#topic_actions
-						= render 'scuttlebutt/votes/widget', parent_obj: @topic, args: {}
-						|
-						%a{ href: scuttlebutt.report_post_path( @topic.id, selector: '#topic_actions' ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report
-						|
-						= render 'scuttlebutt/subscriptions/widget', parent_obj: @topic, args: {}
+						= render 'scuttlebutt/posts/social_bar', post: @topic, args: { subscribable: true, selector: "#topic_actions" }
 
 
 					.list-unstyled.mt-4

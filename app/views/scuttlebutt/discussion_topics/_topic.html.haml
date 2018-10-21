@@ -34,9 +34,4 @@
 				- else
 					= topic.last_post.user.username
 		.media-actions
-			- unless args[:disable_votes]
-				= render 'scuttlebutt/votes/widget', parent_obj: topic, args: {}
-				|
-			%a{ href: scuttlebutt.report_post_path( topic.id, selector: selector ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report
-			|
-			= render 'scuttlebutt/subscriptions/widget', parent_obj: topic, args: {}
+			= render 'scuttlebutt/posts/social_bar', post: topic, args: args.merge( subscribable: true, selector: selector  )

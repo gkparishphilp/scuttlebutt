@@ -37,7 +37,7 @@ module Scuttlebutt
 		end
 
 		def destroy
-			@post = Post.find( params[:id] )
+			@post = Post.friendly.find( params[:id] )
 			raise Exception.new( "Permission Denied" ) unless @post.user == current_user
 			@post.update( status: 'trash' )
 
@@ -51,12 +51,12 @@ module Scuttlebutt
 		end
 
 		def edit
-			@post = Post.where( user: current_user ).find( params[:id] )
+			@post = Post.where( user: current_user ).friendly.find( params[:id] )
 			raise Exception.new( "Permission Denied" ) unless @post.user == current_user
 		end
 
 		def report
-			@post = Post.find( params[:id] )
+			@post = Post.friendly.find( params[:id] )
 
 			log_event( { name: 'report', category: 'social', on: @post, content: "reported the post #{@post} (#{@post.id}) for moderation." } )
 
@@ -70,11 +70,11 @@ module Scuttlebutt
 		end
 
 		def show
-			@post = Post.find( params[:id] )
+			@post = Post.friendly.find( params[:id] )
 		end
 
 		def update
-			@post = Post.where( user: current_user ).find( params[:id] )
+			@post = Post.where( user: current_user ).friendly.find( params[:id] )
 			raise Exception.new( "Permission Denied" ) unless @post.user == current_user
 
 			@post.attributes = post_params

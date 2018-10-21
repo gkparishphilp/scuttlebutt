@@ -13,11 +13,5 @@
 		.media-text
 			- if comment.content
 				.fr-view= raw comment.sanitized_content
-		- unless args[:disable_votes]
-			.media-actions
-				= render 'scuttlebutt/votes/widget', parent_obj: comment, args: {}
-				|
-				%a.dropdown-item{ href: scuttlebutt.report_post_path( comment, selector: selector ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report
-				|
-				= time_ago_in_words( comment.created_at )
-				ago
+		.media-actions
+			= render 'scuttlebutt/posts/social_bar', post: comment, args: args.merge( selector: selector )

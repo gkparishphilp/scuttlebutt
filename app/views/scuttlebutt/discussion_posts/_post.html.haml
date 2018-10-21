@@ -22,7 +22,4 @@
 				%blockquote.small
 					.fr-view= raw post.sanitized_content
 		.media-actions
-			- unless args[:disable_votes]
-				= render 'scuttlebutt/votes/widget', parent_obj: post, args: {}
-				|
-			%a{ href: scuttlebutt.report_post_path( post.id, selector: selector ), data: { confirm: 'Are you sure you want to report this?', method: :put, remote: true } } report
+			= render 'scuttlebutt/posts/social_bar', post: post, args: args.merge( selector: selector )
