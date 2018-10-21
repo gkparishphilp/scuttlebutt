@@ -1,2 +1,2 @@
-$("#{params[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/comments/widget', locals: {  parent_obj: @post.parent_obj, args: ( params.require(:args).permit(:per,:page,:comment,:form) || {} ).to_h.symbolize_keys.deep_merge( { page: :last, comment: { async: true } } ) })}")
+$("#{params[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/comments/widget', locals: {  parent_obj: @post.parent_obj, args: (params.permit(:args => {}) || { args: {} })[:args].to_h.symbolize_keys.deep_merge( { page: :last, comment: { async: true } } ) })}")
 $("#{params[:selector]}").trigger('new-content')

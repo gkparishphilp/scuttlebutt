@@ -1,1 +1,1 @@
-$("#{params[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/votes/widget', locals: {  parent_obj: @vote.parent_obj, args: { async: true, vote: @vote } })}")
+$("#{params[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/votes/widget', locals: {  parent_obj: @vote.parent_obj, args: (params.permit(:args => {}) || { args: {} })[:args].to_h.symbolize_keys.deep_merge({ async: true, vote: @vote }) })}")

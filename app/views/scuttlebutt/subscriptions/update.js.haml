@@ -1,1 +1,1 @@
-$("#{params[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/subscriptions/widget', locals: {  parent_obj: @sub.parent_obj, args: (params.permit(:args => {}) || { args: {} })[:args].to_h.symbolize_keys.merge({ async: true, subscription: @sub }) })}")
+$("#{params[:selector]}").replaceWith("#{j render(partial: 'scuttlebutt/subscriptions/widget', locals: {  parent_obj: @sub.parent_obj, args: (params.permit(:args => {}) || { args: {} })[:args].to_h.symbolize_keys.deep_merge({ async: true, subscription: @sub }) })}")
