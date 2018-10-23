@@ -1,0 +1,59 @@
+
+.container-fluid
+	.row
+		.col-xs-12
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					= link_to 'Post Admin', scuttlebutt.post_admin_index_path
+				%li
+					%strong
+						Edit Post
+
+	= form_for @post, as: :post, url: scuttlebutt.post_admin_path( @post ) do |f|
+		.row
+			.col-xs-12.col-md-8
+				- if @post.reply_to.present?
+					.form-group
+						%label Reply to:
+						%a{ href: scuttlebutt.post_admin_path( @post.reply_to ) }
+							= @post.reply_to.subject || @post.sanitize_content.truncate(30)
+				- if @post.parent_obj.present?
+					.form-group
+						%label Re:
+						- if @post.parent_obj.respond_to? :url
+							%a{ href: @post.parent_obj.url }=@post.parent_obj
+						- else
+							=@post.parent_obj
+						(#{ @post.parent_obj.class.name.underscore.humanize.titleize })
+				.form-group
+					%label Subject
+					= f.text_field :subject, class: 'form-control'
+				.form-group.mb-1
+					%label Content
+					= f.text_area :content, class: 'form-control wysiwyg', data: { wysiwyg: { height_min: 200, toolbar_sticky: true, toolbar_preset: 'admin_default', object_class: @post.class.base_class.name, object_id: @post.id }.to_json }
+
+				.form-group
+					%img.pull-left{ src: @post.user.avatar, style: 'width: 64px;margin-right: 0.5em' }
+					by
+					%a{ href: swell_id.user_admin_path(@post.user) }
+						= @post.user.full_name
+					.clearfix
+			.col-xs-12.col-md-4
+				.well
+					.form-group
+						= f.label :status
+						= f.collection_select :status, Scuttlebutt::Post.statuses, :first, :first, {}, class: 'form-control'
+					.form-group
+						= f.label :availability
+						= f.collection_select :availability, Scuttlebutt::Post.availabilities, :first, :first, {}, class: 'form-control'
+					.form-group
+						= f.label :tags_csv, 'Tags:'
+						= f.text_field :tags_csv, placeholder: 'Separate tags with commas', class: 'form-control'
+					.form-group
+						= f.label :mentions_csv, 'Mentions:'
+						= f.text_field :mentions_csv, placeholder: 'Separate mentions with commas', class: 'form-control'
+					.form-group
+						= f.submit 'Update', class: 'btn btn-primary'
+						.pull-right= link_to 'Cancel', :back, class: 'btn btn-default btn-sm'

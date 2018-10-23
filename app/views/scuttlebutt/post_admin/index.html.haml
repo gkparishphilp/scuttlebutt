@@ -1,0 +1,108 @@
+
+
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					%strong
+						Post Admin
+						= "(#{pluralize @posts.total_count, 'Post'})"
+
+		.col-xs-2
+			- if authorized?( Scuttlebutt::Post, controller: Scuttlebutt::PostAdminController, action: :create )
+				%a.btn.btn-success{ data: { toggle: :modal, target: '#new_post' } }
+					%i.fa.fa-plus-square
+					New
+	.row
+		.col-xs-6
+			= raw paginate @posts
+		.col-xs-6
+			= form_tag post_admin_index_path, method: :get, class: 'pull-right form-inline' do
+				= select_tag :status, options_from_collection_for_select( Scuttlebutt::Post.statuses, :first, :first, params[:status] ), { prompt: "-- All --", class: 'form-control' }
+				= select_tag :type, options_for_select([ ['All Post Types', 'all'], ['Post', 'Scuttlebutt::Post'], ['Comments', 'Scuttlebutt::Comment'], ['Discussion Post', 'Scuttlebutt::DiscussionPost'], ['Discussion Topic', 'Scuttlebutt::DiscussionTopic'] ], @type_filter), { class: 'form-control' }
+
+				= text_field_tag :q, params[:q], class: 'form-control'
+				= submit_tag 'Search', class: 'btn btn-primary'
+				= link_to 'Clear', post_admin_index_path, class: 'btn btn-default btn-xs'
+
+	.row
+		.col-xs-12
+			%table.table.table-striped.table-hover{ style: 'margin-top: 1em' }
+				%thead
+					%th
+					%th
+						Type
+						%a{ href: post_admin_index_path( sort_by: 'type', sort_dir: 'asc' ) }
+							%i.fa.fa-arrow-up
+						%a{ href: post_admin_index_path( sort_by: 'type', sort_dir: 'desc' ) }
+							%i.fa.fa-arrow-down
+
+					%th
+						Subject
+						%a{ href: post_admin_index_path( sort_by: 'title', sort_dir: 'asc' ) }
+							%i.fa.fa-arrow-up
+						%a{ href: post_admin_index_path( sort_by: 'title', sort_dir: 'desc' ) }
+							%i.fa.fa-arrow-down
+
+					%th
+						Created
+						%a{ href: post_admin_index_path( sort_by: 'publish_at', sort_dir: 'asc' ) }
+							%i.fa.fa-arrow-up
+						%a{ href: post_admin_index_path( sort_by: 'publish_at', sort_dir: 'desc' ) }
+							%i.fa.fa-arrow-down
+
+					%th
+						Words
+						%a{ href: post_admin_index_path( sort_by: 'cached_word_count', sort_dir: 'asc' ) }
+							%i.fa.fa-arrow-up
+						%a{ href: post_admin_index_path( sort_by: 'cached_word_count', sort_dir: 'desc' ) }
+							%i.fa.fa-arrow-down
+
+					%th Status
+					%th Tags
+					%th
+				%tbody
+					- @posts.each do |post|
+						%tr
+							%td
+								= image_tag post.user.avatar.to_s, width: 50, class: 'img img-rounded'
+							%td
+								= post.type.gsub(/^Scuttlebutt\:\:/,'').underscore.humanize.titleize
+							%td
+								.title{ style: 'font-size:120%;' }
+									- if post.subject.blank?
+										= link_to 'No subject', edit_post_admin_path( post.id )
+									- else
+										= link_to post.subject, edit_post_admin_path( post.id )
+								%a.btn{ 'data-clipboard-text' => post.url, style: 'padding:0;border:none;' }
+									= post.url
+									%i.fa.fa-clipboard
+							%td
+								= post.created_at.to_s( :slashed_time )
+							%td
+								= post.try( :cached_word_count ) || 'N/A'
+							%td
+								.badge{ class: post.status }
+									= post.status
+							%td
+								= post.tags.join(', ')
+							%td
+								.btn-group
+									%button.btn.btn-mini.btn-default.dropdown-toggle{ data: { toggle: :dropdown } }
+										%i.fa.fa-cog
+										%b.caret
+									%ul.dropdown-menu
+										%li
+											%a{ href: edit_post_admin_path( post.id ) }
+												%i.fa.fa-pencil
+												Edit
+
+										%li.divider
+										%li
+											%a{ href: post_admin_path( post ), data: { method: 'delete', confirm: 'Are you sure?' } }
+												%i.fa.fa-trash-o
+												Trash!

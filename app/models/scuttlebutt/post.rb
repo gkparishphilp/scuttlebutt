@@ -35,6 +35,14 @@ module Scuttlebutt
 			Digest::SHA1.hexdigest(self.content || '')
 		end
 
+		def mentions_csv
+			self.mentions.join(',')
+		end
+
+		def mentions_csv=(str)
+			self.mentions = str.split(',').collect(&:strip)
+		end
+
 		def self.not_reply
 			where( reply_to_id: nil )
 		end
@@ -69,6 +77,12 @@ module Scuttlebutt
 			ActionView::Base.full_sanitizer.sanitize( self.content, tags: Scuttlebutt.post_allowed_tags, attributes: Scuttlebutt.post_allowed_attributes )
 		end
 
+		def self.term_search( term )
+			posts = self
+			posts = posts.where( "subject ILIKE :q OR content ILIKE :q", q: "%#{term.gsub('%','\\\\%')}%" ) if term.present?
+			posts
+		end
+
 		def word_count
 			return 0 if self.content.blank?
 			self.sanitized_content.scan(/[\w-]+/).size
@@ -93,6 +107,14 @@ module Scuttlebutt
 
 		def self.order_has_content_asc
 			order( "((content = '') IS FALSE) ASC" )
+		end
+
+		def tags_csv
+			self.tags.join(',')
+		end
+
+		def tags_csv=(str)
+			self.tags = str.split(',').collect(&:strip)
 		end
 
 		def to_s
