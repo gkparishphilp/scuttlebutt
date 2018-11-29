@@ -1,3 +1,3 @@
 module Scuttlebutt
-  VERSION = '1.1.13'
+  VERSION = '1.2.0'
 end
