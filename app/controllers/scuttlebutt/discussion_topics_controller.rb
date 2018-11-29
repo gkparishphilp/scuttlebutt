@@ -19,9 +19,9 @@ module Scuttlebutt
 			if @topic.save
 				set_flash "Topic Posted"
 
-				log_event( name: 'add_topic', cateogry: 'social', on: @topic.parent_obj, content: "created a topic #{@post}" )
+				log_event( name: 'add_topic', cateogry: 'social', on: @topic.parent_obj, content: "created a topic #{@topic}" )
 
-				unless ( subscription = Scuttlebutt::Subscription.find_or_initialize_by( user: @post.user, parent_obj: @post.root_parent_obj ) ).persisted?
+				unless ( subscription = Scuttlebutt::Subscription.find_or_initialize_by( user: @topic.user, parent_obj: @topic ) ).persisted?
 					log_event( name: 'follow', cateogry: 'social', on: @topic, content: "started following #{@topic}" ) if subscription.save
 				end
 
