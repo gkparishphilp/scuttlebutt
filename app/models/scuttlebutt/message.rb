@@ -1,5 +1,6 @@
 module Scuttlebutt
 	class Message < ApplicationRecord
+		include Scuttlebutt::MessageSearchable if (Scuttlebutt::MessageSearchable rescue nil)
 
 		belongs_to :recipient, class_name: 'User', optional: true
 		belongs_to :sender, class_name: 'User', optional: true

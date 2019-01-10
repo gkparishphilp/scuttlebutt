@@ -1,5 +1,6 @@
 module Scuttlebutt
 	class Discussion < Pulitzer::Media
+		include Scuttlebutt::DiscussionSearchable if (Scuttlebutt::DiscussionSearchable rescue nil)
 
 		mounted_at "/#{Scuttlebutt.discussion_path}"
 

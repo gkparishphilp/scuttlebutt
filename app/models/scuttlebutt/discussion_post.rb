@@ -1,5 +1,6 @@
 module Scuttlebutt
 	class DiscussionPost < Post
+		include Scuttlebutt::DiscussionPostSearchable if (Scuttlebutt::DiscussionPostSearchable rescue nil)
 
 		def discussion
 			self.topic.discussion

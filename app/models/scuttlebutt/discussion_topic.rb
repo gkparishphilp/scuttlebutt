@@ -1,5 +1,6 @@
 module Scuttlebutt
 	class DiscussionTopic < Post
+		include Scuttlebutt::DiscussionTopicSearchable if (Scuttlebutt::DiscussionTopicSearchable rescue nil)
 
 		include Pulitzer::Concerns::URLConcern
 

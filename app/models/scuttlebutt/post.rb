@@ -1,5 +1,6 @@
 module Scuttlebutt
 	class Post < ApplicationRecord
+		include Scuttlebutt::PostSearchable if (Scuttlebutt::PostSearchable rescue nil)
 
 		before_save	:set_cached_counts, :update_content_hash
 
