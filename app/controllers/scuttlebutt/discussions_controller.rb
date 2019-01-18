@@ -3,6 +3,10 @@ module Scuttlebutt
 
 		def index
 			@discussions = Discussion.published.order( created_at: :asc )
+
+			set_page_meta title: "Discussions"
+
+			log_event( { name: 'pageview', content: "viewed the discussions index page." } )
 		end
 
 		def show
@@ -15,6 +19,11 @@ module Scuttlebutt
 			end
 
 			@topics = @discussion.topics.active.order( created_at: :desc ).page( params[:page] )
+
+
+			set_page_meta title: @discussion.title
+
+			log_event( { name: 'pageview', content: "viewed the discussions page #{@discussion}." } )
 
 		end
 

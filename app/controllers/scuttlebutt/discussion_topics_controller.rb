@@ -42,6 +42,10 @@ module Scuttlebutt
 			end
 
 			@posts = @topic.posts.active.order( created_at: :asc ).page( params[:page] )
+
+			set_page_meta title: @topic.subject
+
+			log_event( name: 'pageview', content: "viewed the discussion topic #{@topic}." )
 		end
 
 	end
