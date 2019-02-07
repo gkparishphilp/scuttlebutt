@@ -1,18 +1,18 @@
 #= require pulitzer/plugins/froala/js/froala_editor
-#= require pulitzer/plugins/froala/js/plugins/align
-#= require pulitzer/plugins/froala/js/plugins/char_counter
-#= require pulitzer/plugins/froala/js/plugins/code_view
-#= require pulitzer/plugins/froala/js/plugins/code_beautifier
-#= require pulitzer/plugins/froala/js/plugins/colors
-#= require pulitzer/plugins/froala/js/plugins/font_size
+## require pulitzer/plugins/froala/js/plugins/align
+## require pulitzer/plugins/froala/js/plugins/char_counter
+## require pulitzer/plugins/froala/js/plugins/code_view
+## require pulitzer/plugins/froala/js/plugins/code_beautifier
+## require pulitzer/plugins/froala/js/plugins/colors
+## require pulitzer/plugins/froala/js/plugins/font_size
 #= require pulitzer/plugins/froala/js/plugins/image
 #= require pulitzer/plugins/froala/js/plugins/link
-#= require pulitzer/plugins/froala/js/plugins/lists
+## require pulitzer/plugins/froala/js/plugins/lists
 #= require pulitzer/plugins/froala/js/plugins/paragraph_format
-#= require pulitzer/plugins/froala/js/plugins/quote
-#= require pulitzer/plugins/froala/js/plugins/table
+## require pulitzer/plugins/froala/js/plugins/quote
+## require pulitzer/plugins/froala/js/plugins/table
 #= require pulitzer/plugins/froala/js/plugins/url
-#= require pulitzer/plugins/froala/js/plugins/video
+## require pulitzer/plugins/froala/js/plugins/video
 
 init_wysiwyg = (container)->
 
