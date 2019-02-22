@@ -12,6 +12,7 @@ module Scuttlebutt
 					indexes :subject, analyzer: 'english', index_options: 'offsets'
 					indexes :rating, type: 'integer'
 					indexes :status
+					indexes :public, type: 'boolean'
 				end
 			end
 		end

@@ -19,10 +19,10 @@
 				%a.btn.btn-default.btn-sm{ href: scuttlebutt.vote_path( vote, val: -1, selector: selector ), data: { method: :put, remote: true } }
 					down vote
 		- else
-			%a.btn.btn-default.btn-sm{ href: scuttlebutt.votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, val: 1, selector: selector, optin: (args[:] || 1) ), data: { method: :post, remote: true } }
+			%a.btn.btn-default.btn-sm{ href: scuttlebutt.votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, val: 1, selector: selector, optin: (args[:optin] || 1) ), data: { method: :post, remote: true } }
 				up vote
 			\/
-			%a.btn.btn-default.btn-sm{ href: scuttlebutt.votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, val: -1, selector: selector, optin: (args[:] || 1) ), data: { method: :post, remote: true } }
+			%a.btn.btn-default.btn-sm{ href: scuttlebutt.votes_path( parent_obj_type: parent_obj.class.base_class.name, parent_obj_id: parent_obj.id, val: -1, selector: selector, optin: (args[:optin] || 1) ), data: { method: :post, remote: true } }
 				down vote
 	- else
 		%a{ href: '/login' } log in
