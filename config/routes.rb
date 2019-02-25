@@ -7,9 +7,13 @@ Scuttlebutt::Engine.routes.draw do
 		get :widget, on: :collection
 	end
 
+	resources :comment_admin
+
 	resources :contacts do
 		get :thank_you, on: :collection, path: 'thank-you'
 	end
+
+	resources :contact_admin
 
 
 	if Scuttlebutt.discussion_path
