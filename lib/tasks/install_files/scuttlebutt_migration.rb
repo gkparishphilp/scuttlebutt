@@ -63,6 +63,7 @@ class ScuttlebuttMigration < ActiveRecord::Migration[5.1]
 
 			t.string			:subject
 			t.text				:content
+			t.text 				:sanitized_content, default: nil
 			t.integer 			:rating # for reviews
 
 			t.boolean 			:sticky, default: false

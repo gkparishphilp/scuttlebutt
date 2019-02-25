@@ -4,7 +4,6 @@ module Scuttlebutt
 		before_action 	:authenticate_user!, only: [:create,:update,:edit,:destroy]
 
 		def create
-
 			@post = Post.new( type: params[:post][:type], user: current_user )
 			@post.attributes = post_params
 			@post.sanitized_content = ActionController::Base.helpers.sanitize( @post.content, tags: Scuttlebutt.post_allowed_tags, attributes: Scuttlebutt.post_allowed_attributes ) if @post.content
