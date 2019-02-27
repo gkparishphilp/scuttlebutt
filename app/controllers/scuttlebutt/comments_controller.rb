@@ -1,5 +1,36 @@
 module Scuttlebutt
-	class CommentsController < PostsController
+	class CommentsController < ApplicationController
+
+		before_action 	:authenticate_user!, only: [:create,:update,:edit,:destroy]
+
+		def create
+			@comment = Comment.new( user: current_user )
+			@comment.attributes = comment_params
+			@comment.sanitized_content = ActionController::Base.helpers.sanitize( @comment.content, tags: Scuttlebutt.post_allowed_tags, attributes: Scuttlebutt.post_allowed_attributes ) if @comment.content
+			
+			respond_to do |format|
+				if @comment.save
+
+					log_event( name: 'comment', cateogry: 'social', on: @comment.parent_obj, content: "commented on #{@comment.parent_obj}" )
+
+					if params[:optin] == '1' && not( ( subscription = Scuttlebutt::Subscription.find_or_initialize_by( user: @comment.user, parent_obj: @comment.root_parent_obj ) ).persisted? )
+						log_event( name: 'follow', cateogry: 'social', on: @comment.root_parent_obj, content: "started following #{@comment.root_parent_obj}" ) if subscription.save
+					end
+
+					format.html {
+						set_flash 'Success'
+						redirect_back( fallback_location: '/' )
+					}
+					format.js {}
+				else
+					format.html {
+						set_flash 'Error, post could not be saved.'
+						redirect_back( fallback_location: '/' )
+					}
+					format.js {}
+				end
+			end
+		end
 
 		def index
 
@@ -25,7 +56,7 @@ module Scuttlebutt
 		end
 
 		def new
-			@post = Comment.new( user: current_user )
+			@comment = Comment.new( user: current_user )
 		end
 
 		def widget
@@ -48,6 +79,13 @@ module Scuttlebutt
 				}
 			end
 		end
+
+		private
+
+			def comment_params
+				params.require( :comment ).permit( :title, :subject, :reply_to_id, :content, :status, :parent_obj_type, :parent_obj_id )
+			end
+
 
 	end
 end
