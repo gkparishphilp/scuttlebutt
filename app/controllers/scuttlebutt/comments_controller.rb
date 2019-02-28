@@ -18,13 +18,13 @@ module Scuttlebutt
 					end
 
 					format.html {
-						set_flash 'Success'
+						set_flash 'Thank you for your comment'
 						redirect_back( fallback_location: '/' )
 					}
 					format.js {}
 				else
 					format.html {
-						set_flash 'Error, post could not be saved.'
+						set_flash 'Error, comment could not be saved.'
 						redirect_back( fallback_location: '/' )
 					}
 					format.js {}

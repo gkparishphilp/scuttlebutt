@@ -1,1 +1,88 @@
-index.html.haml
+
+
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					%strong
+						Comment Admin
+						= "(#{pluralize @comments.total_count, 'Comment'})"
+
+		.col-xs-2
+			
+	.row
+		.col-xs-6
+			= raw paginate @comments
+		.col-xs-6
+
+
+	.row
+		.col-xs-12
+			%table.table.table-striped.table-hover{ style: 'margin-top: 1em' }
+				%thead
+					%th
+					%th
+						User
+						%a{ href: comment_admin_index_path( sort_by: 'user_id', sort_dir: 'asc' ) }
+							%i.fa.fa-arrow-up
+						%a{ href: comment_admin_index_path( sort_by: 'user_id', sort_dir: 'desc' ) }
+							%i.fa.fa-arrow-down
+
+					%th
+						Created
+						%a{ href: comment_admin_index_path( sort_by: 'created_at', sort_dir: 'asc' ) }
+							%i.fa.fa-arrow-up
+						%a{ href: comment_admin_index_path( sort_by: 'created_at', sort_dir: 'desc' ) }
+							%i.fa.fa-arrow-down
+
+					%td
+					
+
+					%th Status
+
+					%th
+				%tbody
+					- @comments.each do |comment|
+						%tr
+							%td
+								= image_tag comment.user.avatar.to_s, width: 50, class: 'img img-rounded'
+							%td
+								= comment.user
+							%td
+								= comment.created_at.to_s( :slashed_time )
+
+							%td
+								= truncate comment.content, length: 480
+							%td
+								- if comment.active?
+									.badge{ class: comment.status }
+										Live
+								- elsif comment.draft?
+									.badge{ class: comment.status }
+										Draft
+								- elsif comment.active?
+									.badge{ class: 'pending' }
+										Pending
+								- else
+									.badge{ class: comment.status }
+										= comment.status
+							%td
+								.btn-group
+									%button.btn.btn-mini.btn-default.dropdown-toggle{ data: { toggle: :dropdown } }
+										%i.fa.fa-cog
+										%b.caret
+									%ul.dropdown-menu
+										%li
+											%a{ href: edit_comment_admin_path( comment.id ) }
+												%i.fa.fa-pencil
+												Edit
+										%li.divider
+										%li
+											%a{ href: comment_admin_path( comment ), data: { method: 'delete', confirm: 'Are you sure?' } }
+												%i.fa.fa-trash-o
+												Delete!
+
