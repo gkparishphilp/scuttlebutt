@@ -1,1 +1,72 @@
-edit.html.haml
+
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					= link_to 'Comment Admin', comment_admin_index_path
+				%li
+					%strong
+						Edit
+						= @comment.subject
+		.col-xs-2
+
+	= form_for @comment, url: comment_admin_path( @comment ) do |f|
+
+		.row
+			.col-xs-8
+
+				.form-group
+					.row
+						.col-sm-3
+							= image_tag @comment.user.avatar.to_s, class: 'img img-rounded img-responsive'
+						.col-sm-9
+							%h2
+								= @comment.user
+							
+							.joined
+								Joined:
+								= @comment.user.created_at
+							.comment_count_total
+								Comment Count
+								= Scuttlebutt::Comment.where( user_id: @comment.user ).count
+							.comment_count_approved
+								Approved Comment Count
+								= Scuttlebutt::Comment.where( user_id: @comment.user ).active.count
+
+
+
+
+				.form-group
+					= f.text_field :subject, class: 'form-control input-lg'
+
+
+				.form-group
+					= f.text_area :content, class: 'form-control wysiwyg', data: { wysiwyg: { height_min: 200, toolbar_sticky: true, toolbar_preset: 'admin_default', object_class: @comment.class.base_class.name, object_id: @comment.id }.to_json }
+
+
+			.col-xs-4
+				.well
+					
+					.form-group
+						= f.label :created_at
+						= f.text_field :created_at, value: current_user.to_local_tz( @comment.created_at ), class: 'form-control datetimepicker'
+					
+					.form-group
+						= f.label :status
+						= f.collection_select :status, Scuttlebutt::Comment.statuses, :first, :first, {}, class: 'form-control'
+
+
+					.form-group
+						= f.submit 'Update', class: 'btn btn-primary'
+					
+
+
+
+
+
+
+

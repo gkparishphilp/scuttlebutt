@@ -2,13 +2,13 @@ module Scuttlebutt
 	class ContactsController < ApplicationController
 
 		def create
-			@user = User.find_or_create_by( email: params[:message][:email] )
-			@user.full_name = params[:message][:name]
+			@user = User.find_or_create_by( email: params[:contact][:email] )
+			@user.full_name = params[:contact][:name]
 			if @user.save
-				@message = Message.new( message_params )
-				@message.sender = @user
-				@message.save
-				Scuttlebutt::ContactMailer.new_contact( @message ).deliver if Scuttlebutt.contact_email_to.present?
+				@contact = Contact.new( contact_params )
+				@contact.sender = @user
+				@contact.save
+				Scuttlebutt::ContactMailer.new_contact( @contact ).deliver if Scuttlebutt.contact_email_to.present?
 
 				redirect_to thank_you_contacts_path
 			else
@@ -21,7 +21,7 @@ module Scuttlebutt
 
 		private
 			def contact_params
-				params.require( :message ).permit( :title, :content, :email, :name )
+				params.require( :contact ).permit( :title, :content, :email, :name )
 			end
 
 

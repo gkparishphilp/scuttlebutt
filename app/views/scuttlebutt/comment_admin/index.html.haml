@@ -33,13 +33,14 @@
 							%i.fa.fa-arrow-down
 
 					%th
+
+					%th
 						Created
 						%a{ href: comment_admin_index_path( sort_by: 'created_at', sort_dir: 'asc' ) }
 							%i.fa.fa-arrow-up
 						%a{ href: comment_admin_index_path( sort_by: 'created_at', sort_dir: 'desc' ) }
 							%i.fa.fa-arrow-down
 
-					%td
 					
 
 					%th Status
@@ -52,11 +53,15 @@
 								= image_tag comment.user.avatar.to_s, width: 50, class: 'img img-rounded'
 							%td
 								= comment.user
-							%td
-								= comment.created_at.to_s( :slashed_time )
+							
 
 							%td
-								= truncate comment.content, length: 480
+								%a{ href: edit_comment_admin_path( comment ) }
+									= truncate comment.content, length: 480
+
+							%td
+								= comment.created_at.strftime( '%B %d, %Y @ %H:%M' )
+
 							%td
 								- if comment.active?
 									.badge{ class: comment.status }
