@@ -19,7 +19,13 @@ module Scuttlebutt
 
 					format.html {
 						set_flash 'Thank you for your comment'
-						redirect_back( fallback_location: '/' )
+						back_path = @comment.parent_obj.try( :url )
+						if back_path.present?
+							back_path = back_path + "#comments"
+							redirect_to back_path
+						else
+							redirect_back( fallback_location: '/' )
+						end
 					}
 					format.js {}
 				else
