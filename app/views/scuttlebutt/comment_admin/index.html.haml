@@ -35,6 +35,9 @@
 					%th
 
 					%th
+						On
+
+					%th
 						Created
 						%a{ href: comment_admin_index_path( sort_by: 'created_at', sort_dir: 'asc' ) }
 							%i.fa.fa-arrow-up
@@ -58,6 +61,10 @@
 							%td
 								%a{ href: edit_comment_admin_path( comment ) }
 									= truncate comment.content, length: 480
+
+							%td
+								%a{ href: comment.parent_obj.try( :url ) }
+									= comment.parent_obj.try( :title )
 
 							%td
 								= comment.created_at.strftime( '%B %d, %Y @ %H:%M' )
