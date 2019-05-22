@@ -7,7 +7,7 @@ module Scuttlebutt
 			@comment = Comment.new( user: current_user )
 			@comment.attributes = comment_params
 			@comment.sanitized_content = ActionController::Base.helpers.sanitize( @comment.content, tags: Scuttlebutt.post_allowed_tags, attributes: Scuttlebutt.post_allowed_attributes ) if @comment.content
-			
+
 			respond_to do |format|
 				if @comment.save
 
@@ -19,13 +19,10 @@ module Scuttlebutt
 
 					format.html {
 						set_flash 'Thank you for your comment'
-						back_path = @comment.parent_obj.try( :url )
-						if back_path.present?
-							back_path = back_path + "#comments"
-							redirect_to back_path
-						else
-							redirect_back( fallback_location: '/' )
-						end
+
+						parent_path = @comment.parent_obj.try( :url )
+						parent_path = parent_path + "#comments"
+						redirect_back( fallback_location: parent_path )
 					}
 					format.js {}
 				else
