@@ -27,7 +27,6 @@ namespace :scuttlebutt do
 
 		migrations = [
 			'scuttlebutt_migration.rb',
-			'scuttlebutt_sanitized_content_migration.rb',
 		]
 
 		prefix = Time.now.utc.strftime("%Y%m%d%H%M%S").to_i

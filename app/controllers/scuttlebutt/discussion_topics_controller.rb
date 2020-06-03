@@ -2,7 +2,7 @@
 module Scuttlebutt
 	class DiscussionTopicsController < ApplicationController
 
-		before_action :authenticate_user!, except: :show
+		#before_action :authenticate_user!, except: :show
 
 		def create
 			@discussion = Discussion.published.friendly.find( params[:discussion_id] )

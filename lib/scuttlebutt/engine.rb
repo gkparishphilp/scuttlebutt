@@ -1,5 +1,7 @@
 module Scuttlebutt
 
+	require 'devise'
+
 	class << self
 		mattr_accessor :discussion_path
 		self.discussion_path = 'discussions'
