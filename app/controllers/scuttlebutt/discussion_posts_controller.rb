@@ -2,7 +2,7 @@
 module Scuttlebutt
 	class DiscussionPostsController < ApplicationController
 
-		before_action :authenticate_user!
+		#before_action :authenticate_user!
 
 		def create
 			@topic = DiscussionTopic.active.friendly.find( params[:topic_id] )
