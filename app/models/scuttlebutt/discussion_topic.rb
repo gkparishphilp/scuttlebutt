@@ -2,7 +2,7 @@ module Scuttlebutt
 	class DiscussionTopic < Post
 		include Scuttlebutt::DiscussionTopicSearchable if (Scuttlebutt::DiscussionTopicSearchable rescue nil)
 
-		include Pulitzer::Concerns::URLConcern
+		include Pulitzer::Concerns::UrlConcern
 
 		mounted_at "/#{Scuttlebutt.discussion_topic_path}"
 
