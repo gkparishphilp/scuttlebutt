@@ -39,7 +39,7 @@ module Scuttlebutt
 			total_actors = 0
 
 			if children_count > 0
-				actor_shortlist = User.joins("INNER JOIN (#{self.children.group(:actor_id).select(:actor_id, 'MIN(created_at) created_at').reorder('').to_sql}) user_post_children ON user_post_children.actor_id = users.id").order('user_post_children.created_at ASC')
+				actor_shortlist = User.joins("INNER JOIN (#{self.children.group(:actor_id).select(:actor_id, 'MIN(created_at) created_at').reorder('').to_sql}) user_post_children ON user_post_children.actor_id = users.id").order(Arel.sql('user_post_children.created_at ASC'))
 				actor_shortlist = actor_shortlist.limit(args[:max_actors])
 
 				total_actors = actor_shortlist.count

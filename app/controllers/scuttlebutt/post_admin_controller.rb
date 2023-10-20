@@ -22,7 +22,7 @@ module Scuttlebutt
 
 			@type_filter = ( params[:type] || 'all' )
 
-			@posts = Post.joins(:user).order( "#{sort_by} #{sort_dir}" )
+			@posts = Post.joins(:user).order( Arel.sql("#{sort_by} #{sort_dir}") )
 			@posts = @posts.where( status: params[:status] ) if params[:status].present? && params[:status] != 'all'
 			@posts = @posts.where( user_id: params[:user_id] ) if params[:user_id]
 			@posts = @posts.where( type: @type_filter ) unless @type_filter == 'all'

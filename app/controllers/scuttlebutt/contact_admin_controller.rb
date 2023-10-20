@@ -7,7 +7,7 @@ module Scuttlebutt
 			sort_by = params[:sort_by] || 'created_at'
 			sort_dir = params[:sort_dir] || 'desc'
 
-			@contacts = Contact.order( "#{sort_by} #{sort_dir}" )
+			@contacts = Contact.order( Arel.sql("#{sort_by} #{sort_dir}") )
 
 			if params[:status].present? && params[:status] != 'all'
 				@contacts = eval "@contacts.#{params[:status]}"
